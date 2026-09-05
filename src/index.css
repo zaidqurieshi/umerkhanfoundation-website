@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+/* ────────────────────────────────────────────────────────────────
+   UMER KHAN FOUNDATION — DESIGN TOKENS
+   Brand green, editorial typography, soft shadows & motion.
+   ──────────────────────────────────────────────────────────────── */
+@theme {
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+
+  /* Brand green — the foundation's primary accent */
+  --color-brand-50: #f0faf4;
+  --color-brand-100: #dcf3e6;
+  --color-brand-200: #bae7cf;
+  --color-brand-300: #8bd4af;
+  --color-brand-400: #55ba8a;
+  --color-brand-500: #17925b;
+  --color-brand-600: #107a4b;
+  --color-brand-700: #0d6440;
+  --color-brand-800: #0c4f34;
+  --color-brand-900: #0a3d2a;
+  --color-brand-950: #062a1d;
+
+  /* Neutrals with a green undertone */
+  --color-ink: #0b1512;
+  --color-mist: #f6f8f7;
+
+  /* Soft, premium shadows */
+  --shadow-soft: 0 24px 60px -24px rgb(6 42 29 / 0.22);
+  --shadow-card: 0 10px 30px -12px rgb(6 42 29 / 0.16);
+  --shadow-lift: 0 36px 90px -32px rgb(6 42 29 / 0.38);
+
+  /* Motion */
+  --animate-marquee: marquee 46s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white font-sans text-ink antialiased;
+  text-rendering: optimizeLegibility;
+  font-optical-sizing: auto;
+}
+
+::selection {
+  background: var(--color-brand-200);
+  color: var(--color-brand-950);
+}
+
+/* Slider autoplay progress + soft pulsing dot */
+@keyframes slide-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.75);
+  }
+}
+
+.slide-progress {
+  animation: slide-progress 6.5s linear forwards;
+}
+.soft-pulse {
+  animation: soft-pulse 2.2s ease-in-out infinite;
+}
+
+/* Hide scrollbars on horizontal scrollers while keeping scrollability */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Visible, consistent focus states */
+:where(a, button, [role="button"], input, textarea, select, summary):focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee,
+  .slide-progress,
+  .soft-pulse {
+    animation: none !important;
+  }
+}
