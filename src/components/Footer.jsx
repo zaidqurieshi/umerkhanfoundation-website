@@ -29,7 +29,7 @@ export default function Footer() {
                 aria-label="Umer Khan Foundation on Instagram"
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-white/80 ring-1 ring-white/10 transition-all hover:bg-white/10 hover:text-white"
               >
-                <LuInstagram className="h-4.5 w-4.5" aria-hidden="true" />
+                <LuInstagram className="h-5 w-5" aria-hidden="true" />
               </a>
               <a
                 href={org.social.facebook.url}
@@ -38,7 +38,7 @@ export default function Footer() {
                 aria-label="Umer Khan Foundation on Facebook"
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-white/80 ring-1 ring-white/10 transition-all hover:bg-white/10 hover:text-white"
               >
-                <LuFacebook className="h-4.5 w-4.5" aria-hidden="true" />
+                <LuFacebook className="h-5 w-5" aria-hidden="true" />
               </a>
             </div>
           </div>

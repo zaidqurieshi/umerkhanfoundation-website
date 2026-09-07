@@ -14,27 +14,8 @@ export default function About() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading eyebrow={about.eyebrow} title={about.title} id="about-title" />
 
-        {/* Row 1 — image | text */}
-        <div className="mt-14 grid items-center gap-12 lg:mt-20 lg:grid-cols-2 lg:gap-20">
-          <Reveal className="relative">
-            <div
-              className="absolute -bottom-5 -right-5 h-full w-full rounded-[2rem] bg-brand-50"
-              aria-hidden="true"
-            />
-            <div className="relative overflow-hidden rounded-[2rem] shadow-soft ring-1 ring-black/5">
-              <img
-                src={about.imageA.src}
-                alt={about.imageA.alt}
-                width={1073}
-                height={1600}
-                loading="lazy"
-                decoding="async"
-                className="aspect-[4/5] w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
-              />
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.1}>
+        <div className="mt-12 grid items-start gap-10 lg:mt-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+          <Reveal>
             <figure className="border-l-2 border-brand-500 pl-6">
               <blockquote className="font-display text-xl font-normal leading-relaxed text-ink/90 sm:text-2xl">
                 “{about.quote}”
@@ -49,12 +30,14 @@ export default function About() {
                 {p}
               </p>
             ))}
+          </Reveal>
 
-            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Reveal delay={0.1}>
+            <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1">
               {about.checklist.map((item) => (
                 <li
                   key={item}
-                  className="flex items-center gap-3 rounded-2xl border border-black/[0.05] bg-white px-4 py-3 shadow-card"
+                  className="flex items-center gap-3.5 rounded-2xl border border-black/[0.05] bg-white px-4 py-3.5 shadow-card"
                 >
                   <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">
                     <LuCheck className="h-3.5 w-3.5" aria-hidden="true" />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from "framer-motion"
-import { LuArrowUpRight, LuHeart, LuMenu, LuX } from "react-icons/lu"
+import { LuArrowUpRight, LuFacebook, LuHeart, LuInstagram, LuMenu, LuX } from "react-icons/lu"
 import Logo from "./ui/Logo"
 import { navLinks, org } from "../data/content"
 import { useDonation } from "../context/DonationContext"
@@ -163,8 +163,9 @@ export default function Navbar() {
                     href={org.social.instagram.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="transition-colors hover:text-brand-700"
+                    className="inline-flex items-center gap-1.5 transition-colors hover:text-brand-700"
                   >
+                    <LuInstagram className="h-4 w-4" aria-hidden="true" />
                     Instagram
                   </a>
                   <span className="h-3 w-px bg-black/10" aria-hidden="true" />
@@ -172,8 +173,9 @@ export default function Navbar() {
                     href={org.social.facebook.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="transition-colors hover:text-brand-700"
+                    className="inline-flex items-center gap-1.5 transition-colors hover:text-brand-700"
                   >
+                    <LuFacebook className="h-4 w-4" aria-hidden="true" />
                     Facebook
                   </a>
                 </div>
