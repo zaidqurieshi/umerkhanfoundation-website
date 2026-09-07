@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { LuArrowDown, LuFacebook, LuHeart, LuInstagram } from "react-icons/lu"
 import { hero, org } from "../data/content"
@@ -11,6 +12,30 @@ const item = {
   hidden: { opacity: 0, y: 26 },
   show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
 }
+// The h1 itself stays static — it only reserves its slot in the hero's
+// stagger sequence while the words inside it animate.
+const headline = { hidden: {}, show: {} }
+// Headline animates word by word — each word carries its own explicit delay,
+// so the stagger runs identically on desktop & mobile without relying on
+// nested variant orchestration. Same ease curve as the rest of the site.
+const wordTransition = (i) => ({
+  duration: 0.65,
+  delay: 0.2 + i * 0.07,
+  ease: [0.22, 1, 0.36, 1],
+})
+const line1Words = hero.headlineLine1.trim().split(/\s+/)
+const line2Words = [
+  ...hero.headlineLine2[0].trim().split(/\s+/).filter(Boolean).map((text) => ({ text, italic: false, suffix: "" })),
+  ...hero.headlineLine2[1]
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((text, i, arr) => ({
+      text,
+      italic: true,
+      suffix: i === arr.length - 1 ? hero.headlineLine2[2] || "" : "",
+    })),
+]
 
 export default function Hero() {
   const { openDonation } = useDonation()
@@ -44,14 +69,37 @@ export default function Hero() {
           </motion.div>
 
           <motion.h1
-            variants={item}
+            variants={headline}
             className="mt-7 font-display text-[2.85rem] font-medium leading-[1.05] tracking-tight text-ink sm:text-6xl xl:text-7xl"
           >
-            {hero.headlineLine1}
+            {line1Words.map((text, i) => (
+              <Fragment key={`l1-${i}`}>
+                <motion.span
+                  className="inline-block"
+                  initial={reduce ? false : { opacity: 0, y: 22 }}
+                  animate={reduce ? undefined : { opacity: 1, y: 0 }}
+                  transition={wordTransition(i)}
+                >
+                  {text}
+                </motion.span>
+                {i < line1Words.length - 1 ? " " : null}
+              </Fragment>
+            ))}
             <br />
-            {hero.headlineLine2[0]}
-            <em className="italic text-brand-600">{hero.headlineLine2[1]}</em>
-            {hero.headlineLine2[2]}
+            {line2Words.map(({ text, italic, suffix }, i) => (
+              <Fragment key={`l2-${i}`}>
+                <motion.span
+                  className="inline-block"
+                  initial={reduce ? false : { opacity: 0, y: 22 }}
+                  animate={reduce ? undefined : { opacity: 1, y: 0 }}
+                  transition={wordTransition(line1Words.length + i)}
+                >
+                  {italic ? <em className="italic text-brand-600">{text}</em> : text}
+                  {suffix}
+                </motion.span>
+                {i < line2Words.length - 1 ? " " : null}
+              </Fragment>
+            ))}
           </motion.h1>
 
           <motion.p variants={item} className="mt-6 max-w-2xl text-base leading-relaxed text-ink/65 sm:text-lg">

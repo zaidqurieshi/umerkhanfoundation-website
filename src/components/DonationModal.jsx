@@ -223,7 +223,7 @@ export default function DonationModal() {
             {/* header */}
             <div className="flex items-start justify-between gap-4 px-6 pb-3 pt-6">
               <div className="flex items-center gap-3.5">
-                <LogoMark className="h-11 w-11 shrink-0" />
+                <LogoMark className="h-11 w-auto shrink-0" />
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-600">{STEPS[step]}</p>
                   <h2
