@@ -10,6 +10,7 @@ import {
   LuExternalLink,
   LuInfo,
   LuQrCode,
+  LuSmartphone,
   LuX,
 } from "react-icons/lu"
 import { SiGooglepay, SiPaytm, SiPhonepe } from "react-icons/si"
@@ -20,12 +21,15 @@ import { useDonation } from "../context/DonationContext"
 const STEPS = { choose: "Choose a method", qr: "Scan a QR code", online: "Pay online", done: "Thank you" }
 
 /* UPI intent deep links — open the payer's installed app with the payee
-   pre-filled; the amount is entered inside the app. `upi://pay` lets the
-   phone show its own chooser across every installed UPI app. */
+   pre-filled; the amount is entered inside the app. Only apps that publish
+   a direct payment scheme get their own button; every other UPI app in
+   India (Amazon Pay, CRED, bank apps, …) is reached through the generic
+   `upi://pay` chooser, which lists all installed UPI apps. */
 const UPI_APPS = [
   { name: "PhonePe", scheme: "phonepe://pay", Icon: SiPhonepe },
-  { name: "Paytm", scheme: "paytmmp://pay", Icon: SiPaytm },
   { name: "Google Pay", scheme: "tez://upi/pay", Icon: SiGooglepay },
+  { name: "Paytm", scheme: "paytmmp://pay", Icon: SiPaytm },
+  { name: "BHIM", scheme: "bhim://pay", Icon: LuSmartphone },
 ]
 
 const upiAppHref = (scheme, upiId) =>
@@ -45,6 +49,7 @@ export default function DonationModal() {
   const [step, setStep] = useState("choose")
   const [activeQr, setActiveQr] = useState(0)
   const [copied, setCopied] = useState(false)
+  const [upiFail, setUpiFail] = useState(null)
   const panelRef = useRef(null)
   const reduce = useReducedMotion()
 
@@ -54,6 +59,7 @@ export default function DonationModal() {
       setStep("choose")
       setActiveQr(0)
       setCopied(false)
+      setUpiFail(null)
     }
   }, [isOpen])
 
@@ -107,6 +113,30 @@ export default function DonationModal() {
     } catch {
       /* clipboard unavailable */
     }
+  }
+
+  /* Deep links can't be probed before opening — attempt it, and if the page
+     is still visible ~2s later the app didn't open (not installed). `name`
+     is null for the all-apps chooser, which fails only with no UPI apps. */
+  const attemptUpi = (name) => () => {
+    setUpiFail(null)
+    let opened = false
+    const mark = () => {
+      opened = true
+    }
+    const onVis = () => {
+      if (document.hidden) mark()
+    }
+    const onGone = () => mark()
+    document.addEventListener("visibilitychange", onVis)
+    window.addEventListener("pagehide", onGone)
+    window.addEventListener("blur", onGone)
+    setTimeout(() => {
+      document.removeEventListener("visibilitychange", onVis)
+      window.removeEventListener("pagehide", onGone)
+      window.removeEventListener("blur", onGone)
+      if (!opened) setUpiFail(name)
+    }, 2000)
   }
 
   const qrConfig = donation.qr.codes?.[activeQr] ?? donation.qr.codes?.[0]
@@ -168,7 +198,10 @@ export default function DonationModal() {
               <div className="px-6">
                 <button
                   type="button"
-                  onClick={() => setStep("choose")}
+                  onClick={() => {
+                    setUpiFail(null)
+                    setStep("choose")
+                  }}
                   className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink/55 transition-colors hover:text-brand-700"
                 >
                   <LuArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
@@ -276,27 +309,55 @@ export default function DonationModal() {
                           <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-ink/40">
                             Or pay without scanning
                           </p>
-                          <div className="grid grid-cols-3 gap-2.5">
+                          {upiFail && (
+                            <p
+                              role="alert"
+                              className="flex items-start gap-2 rounded-xl bg-mist px-4 py-3 text-[12.5px] leading-relaxed text-ink/60"
+                            >
+                              <LuInfo className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink/40" aria-hidden="true" />
+                              <span>
+                                {upiFail ? (
+                                  <>
+                                    <b className="font-semibold text-ink/80">{upiFail}</b> didn't open — it may not
+                                    be installed on this device. Please choose another app below, or scan the QR
+                                    code with any UPI app.
+                                  </>
+                                ) : (
+                                  <>
+                                    No UPI app opened — none may be installed on this device. Please install any
+                                    UPI app to donate, or scan the QR code with another phone.
+                                  </>
+                                )}
+                              </span>
+                            </p>
+                          )}
+                          <div className="grid grid-cols-2 gap-2.5">
                             {UPI_APPS.map(({ name, scheme, Icon }) => (
                               <a
                                 key={scheme}
                                 href={upiAppHref(scheme, qrConfig.upiId)}
-                                className="group flex flex-col items-center gap-1.5 rounded-2xl border border-black/[0.08] bg-white px-2 py-3 transition-all duration-300 hover:border-brand-300 hover:bg-brand-50/60 hover:shadow-card"
+                                onClick={attemptUpi(name)}
+                                className="group flex items-center gap-2.5 rounded-2xl border border-black/[0.08] bg-white px-3 py-3 transition-all duration-300 hover:border-brand-300 hover:bg-brand-50/60 hover:shadow-card"
                               >
                                 <Icon
-                                  className="h-6 w-6 text-ink/75 transition-colors group-hover:text-brand-700"
+                                  className="h-6 w-6 shrink-0 text-ink/75 transition-colors group-hover:text-brand-700"
                                   aria-hidden="true"
                                 />
-                                <span className="text-[12px] font-semibold text-ink">{name}</span>
+                                <span className="text-[13px] font-semibold text-ink">{name}</span>
                               </a>
                             ))}
                           </div>
                           <a
                             href={upiAppHref("upi://pay", qrConfig.upiId)}
+                            onClick={attemptUpi(null)}
                             className="rounded-full border border-black/10 py-2.5 text-center text-[13px] font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
                           >
                             Choose from all UPI apps
                           </a>
+                          <p className="text-center text-[11px] leading-snug text-ink/40">
+                            The all-apps option opens your phone's app picker — Amazon Pay, CRED, bank apps and
+                            every other UPI app installed on your device.
+                          </p>
                         </div>
                       )}
                       {qrConfig.note && <p className="text-[13px] leading-relaxed text-ink/55">{qrConfig.note}</p>}
