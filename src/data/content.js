@@ -93,8 +93,8 @@ export const hero = {
     alt: "Umer Khan Foundation volunteers in branded vests distributing relief supplies to families in a village in the Kashmir valley",
   },
   imageSmall: {
-    src: img(1011, 520, 660),
-    alt: "Community members receiving support — replace with a real foundation photograph",
+    src: "/hero-small.jpg",
+    alt: "Umer Khan Foundation volunteers in branded vests distributing relief supplies to families in a village in the Kashmir valley",
   },
   impactCard: {
     label: "Community Impact",
