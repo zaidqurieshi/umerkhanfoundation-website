@@ -1,5 +1,5 @@
-import { Fragment } from "react"
-import { motion, useReducedMotion } from "framer-motion"
+import { Fragment, useEffect, useState } from "react"
+import { animate, motion, useReducedMotion } from "framer-motion"
 import { LuArrowDown, LuFacebook, LuHeart, LuInstagram } from "react-icons/lu"
 import { hero, org } from "../data/content"
 import { useDonation } from "../context/DonationContext"
@@ -13,29 +13,88 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
 }
 // The h1 itself stays static — it only reserves its slot in the hero's
-// stagger sequence while the words inside it animate.
+// stagger sequence; the typed overlay below carries the animation.
 const headline = { hidden: {}, show: {} }
-// Headline animates word by word — each word carries its own explicit delay,
-// so the stagger runs identically on desktop & mobile without relying on
-// nested variant orchestration. Same ease curve as the rest of the site.
-const wordTransition = (i) => ({
-  duration: 0.65,
-  delay: 0.2 + i * 0.07,
-  ease: [0.22, 1, 0.36, 1],
-})
-const line1Words = hero.headlineLine1.trim().split(/\s+/)
-const line2Words = [
-  ...hero.headlineLine2[0].trim().split(/\s+/).filter(Boolean).map((text) => ({ text, italic: false, suffix: "" })),
-  ...hero.headlineLine2[1]
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((text, i, arr) => ({
-      text,
-      italic: true,
-      suffix: i === arr.length - 1 ? hero.headlineLine2[2] || "" : "",
-    })),
+
+// ── Typewriter headline ────────────────────────────────────────────
+// The headline is a sequence of styled segments ("difference" is the
+// italic, brand-colored one). An invisible copy of the full text keeps
+// the exact final layout reserved (zero layout shift) while an overlay
+// reveals it character by character, like a typewriter.
+const TYPE_SEGMENTS = [
+  { text: hero.headlineLine1, italic: false },
+  { text: hero.headlineLine2[0], italic: false },
+  { text: hero.headlineLine2[1], italic: true },
+  { text: hero.headlineLine2[2], italic: false },
 ]
+const TYPE_TOTAL = TYPE_SEGMENTS.reduce((n, s) => n + s.text.length, 0)
+const TYPE_STARTS = TYPE_SEGMENTS.reduce(
+  (acc, s) => [...acc, acc[acc.length - 1] + s.text.length],
+  [0],
+)
+
+function useTypedCount(disabled) {
+  const [count, setCount] = useState(disabled ? TYPE_TOTAL : 0)
+  useEffect(() => {
+    if (disabled) {
+      setCount(TYPE_TOTAL)
+      return undefined
+    }
+    const controls = animate(0, TYPE_TOTAL, {
+      type: "tween",
+      delay: 0.25,
+      duration: 1.6,
+      ease: "linear",
+      onUpdate: (v) => setCount(Math.round(v)),
+    })
+    return () => controls.stop()
+  }, [disabled])
+  return count
+}
+
+function TypewriterHeadline() {
+  const reduce = useReducedMotion()
+  const typed = useTypedCount(Boolean(reduce))
+
+  return (
+    <motion.h1
+      variants={headline}
+      aria-label={`${hero.headlineLine1} ${hero.headlineLine2.join("")}`}
+      className="relative mt-7 font-display text-[2.85rem] font-medium leading-[1.05] tracking-tight text-ink sm:text-6xl xl:text-7xl"
+    >
+      {/* invisible copy of the full headline — reserves the final layout */}
+      <span className="invisible select-none" aria-hidden="true">
+        {hero.headlineLine1}
+        <br />
+        {hero.headlineLine2[0]}
+        <em className="italic text-brand-600">{hero.headlineLine2[1]}</em>
+        {hero.headlineLine2[2]}
+      </span>
+
+      {/* typed overlay — reveals the headline character by character */}
+      <span className="absolute inset-0" aria-hidden="true">
+        {TYPE_SEGMENTS.map((seg, i) => {
+          const start = TYPE_STARTS[i]
+          const visible = seg.text.slice(0, Math.max(0, Math.min(seg.text.length, typed - start)))
+          const showCaret = typed < TYPE_TOTAL && typed >= start && typed < start + seg.text.length
+          return (
+            <Fragment key={i}>
+              {i === 1 && <br />}
+              {seg.italic ? <em className="italic text-brand-600">{visible}</em> : visible}
+              {showCaret && (
+                <motion.span
+                  className="ml-0.5 inline-block h-[0.8em] w-[3px] rounded-full bg-brand-600 align-[-0.05em]"
+                  animate={{ opacity: [1, 0] }}
+                  transition={{ duration: 0.9, repeat: Infinity, repeatType: "mirror", ease: "linear" }}
+                />
+              )}
+            </Fragment>
+          )
+        })}
+      </span>
+    </motion.h1>
+  )
+}
 
 export default function Hero() {
   const { openDonation } = useDonation()
@@ -68,39 +127,7 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          <motion.h1
-            variants={headline}
-            className="mt-7 font-display text-[2.85rem] font-medium leading-[1.05] tracking-tight text-ink sm:text-6xl xl:text-7xl"
-          >
-            {line1Words.map((text, i) => (
-              <Fragment key={`l1-${i}`}>
-                <motion.span
-                  className="inline-block"
-                  initial={reduce ? false : { opacity: 0, y: 22 }}
-                  animate={reduce ? undefined : { opacity: 1, y: 0 }}
-                  transition={wordTransition(i)}
-                >
-                  {text}
-                </motion.span>
-                {i < line1Words.length - 1 ? " " : null}
-              </Fragment>
-            ))}
-            <br />
-            {line2Words.map(({ text, italic, suffix }, i) => (
-              <Fragment key={`l2-${i}`}>
-                <motion.span
-                  className="inline-block"
-                  initial={reduce ? false : { opacity: 0, y: 22 }}
-                  animate={reduce ? undefined : { opacity: 1, y: 0 }}
-                  transition={wordTransition(line1Words.length + i)}
-                >
-                  {italic ? <em className="italic text-brand-600">{text}</em> : text}
-                  {suffix}
-                </motion.span>
-                {i < line2Words.length - 1 ? " " : null}
-              </Fragment>
-            ))}
-          </motion.h1>
+          <TypewriterHeadline />
 
           <motion.p variants={item} className="mt-6 max-w-2xl text-base leading-relaxed text-ink/65 sm:text-lg">
             {hero.description}
