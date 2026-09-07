@@ -28,9 +28,6 @@
 const IG_URL = "https://www.instagram.com/umerkhanfoundation/"
 const FB_URL = "https://www.facebook.com/UmerKhanFoundation"
 
-/** Placeholder image helper — swap each usage for real photos later. */
-const img = (id, w = 1200, h = 900) => `https://picsum.photos/id/${id}/${w}/${h}`
-
 /* ── Organization ─────────────────────────────────────────────── */
 
 export const org = {
@@ -45,7 +42,7 @@ export const org = {
     line2: "Srinagar, Jammu & Kashmir 190023",
     landmark: "Near Masjid Gausia",
   },
-  phone: null, // ← add verified phone, e.g. "+91 9XXXX XXXXX"
+  phone: "+91 9596581009",
   email: null, // ← add verified email, e.g. "contact@…"
   social: {
     instagram: { url: IG_URL, handle: "@umerkhanfoundation" },
@@ -131,10 +128,6 @@ export const about = {
     "Based in Umer Colony “A”, Lal Bazar in Srinagar, the foundation works beside patients who need medical and oxygen support, children who have lost their parents, students who need a hand to stay in school, and households who need food and essentials to get through hard seasons.",
     "Support is delivered directly to individuals, families and community groups — with medical assistance, O₂ support, orphan care, educational assistance, food & supplies and financial assistance at its core.",
   ],
-  story: {
-    title: "Our story",
-    text: "The foundation operates from Lal Bazar, Srinagar — working locally, responding directly, and sharing its work openly with the community on Instagram and Facebook. This page will grow alongside the foundation as more of its story, programmes and verified impact are published.",
-  },
   checklist: [
     "Medical Assistance",
     "O₂ Support",
@@ -146,10 +139,6 @@ export const about = {
   imageA: {
     src: "/about.jpg",
     alt: "Foundation volunteers loading emergency aid kits beside a Soulout Ambulance vehicle in Srinagar",
-  },
-  imageB: {
-    src: img(1035, 1100, 825),
-    alt: "Community life in the Kashmir valley — replace with a real foundation photograph",
   },
 }
 
@@ -166,79 +155,32 @@ export const initiatives = {
       category: "Healthcare",
       title: "Medical Assistance",
       description: "Helping patients and families meet the cost of, and access to, medical care and treatment.",
-      image: {
-        src: img(1012, 900, 620),
-        alt: "Medical assistance programme — replace with a photo from a foundation medical support case",
-      },
     },
     {
       category: "Healthcare",
       title: "O₂ Support",
       description: "Standing with those who struggle to breathe — helping ensure oxygen support is never out of reach.",
-      image: {
-        src: img(1016, 900, 620),
-        alt: "Oxygen support programme — replace with a photo from a foundation O₂ support case",
-      },
     },
     {
       category: "Child Welfare",
       title: "Orphan Care",
       description: "Standing beside orphaned children with the care, stability and support every child deserves.",
-      image: {
-        src: img(1039, 900, 620),
-        alt: "Orphan care programme — replace with a photo from a foundation orphan care activity",
-      },
     },
     {
       category: "Education",
       title: "Educational Assistance",
       description: "Helping students stay in school with the assistance they need to continue learning.",
-      image: {
-        src: img(1040, 900, 620),
-        alt: "Educational assistance programme — replace with a photo of supported students",
-      },
     },
     {
       category: "Relief",
       title: "Food & Supplies",
       description: "Providing food and daily essentials to households facing hardship.",
-      image: {
-        src: img(1041, 900, 620),
-        alt: "Food and supplies distribution — replace with a photo from a foundation ration drive",
-      },
     },
     {
       category: "Direct Aid",
       title: "Financial Assistance",
       description: "Offering timely financial help to individuals and families in urgent need.",
-      image: {
-        src: img(1043, 900, 620),
-        alt: "Financial assistance programme — replace with a photo representing direct family support",
-      },
     },
-  ],
-}
-
-/* ── 7 · Instagram gallery — "Moments from the field" feed ────── */
-
-export const gallery = {
-  eyebrow: "On Instagram",
-  title: "Moments from the field.",
-  description:
-    "Photos straight from the foundation's Instagram feed — follow along for the latest from the field.",
-  handle: "@umerkhanfoundation",
-  url: IG_URL,
-  followLabel: "Follow us on Instagram",
-  images: [
-    { src: img(1060, 900, 900), alt: "Foundation Instagram post — replace with a real post photo" },
-    { src: img(1061, 900, 900), alt: "Foundation Instagram post — replace with a real post photo" },
-    { src: img(1062, 900, 900), alt: "Foundation Instagram post — replace with a real post photo" },
-    { src: img(1063, 900, 900), alt: "Foundation Instagram post — replace with a real post photo" },
-    { src: img(1064, 900, 900), alt: "Foundation Instagram post — replace with a real post photo" },
-    { src: img(1065, 900, 900), alt: "Foundation Instagram post — replace with a real post photo" },
-    { src: img(1066, 900, 900), alt: "Foundation Instagram post — replace with a real post photo" },
-    { src: img(1067, 900, 900), alt: "Foundation Instagram post — replace with a real post photo" },
-    { src: img(1068, 900, 900), alt: "Foundation Instagram post — replace with a real post photo" },
   ],
 }
 
@@ -352,8 +294,6 @@ export const contact = {
   mapEmbed:
     "https://www.google.com/maps?q=Umer+Khan+Foundation,+Umer+Colony+A,+Lal+Bazar,+Srinagar+190023&output=embed",
   mapTitle: "Map — Umer Khan Foundation, Umer Colony A, Lal Bazar, Srinagar",
-  pendingNote:
-    "Official phone number and email address will be published here once confirmed directly by the foundation.",
 }
 
 /* ── 15 · Footer ──────────────────────────────────────────────── */

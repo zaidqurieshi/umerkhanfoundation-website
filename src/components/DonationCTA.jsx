@@ -1,6 +1,7 @@
-import { LuArrowUpRight, LuHeart } from "react-icons/lu"
+import { useState } from "react"
+import { LuArrowUpRight, LuCheck, LuHeart, LuPhone } from "react-icons/lu"
 import Reveal from "./ui/Reveal"
-import { donationCta } from "../data/content"
+import { donationCta, org } from "../data/content"
 import { useDonation } from "../context/DonationContext"
 
 /**
@@ -9,6 +10,19 @@ import { useDonation } from "../context/DonationContext"
  */
 export default function DonationCTA() {
   const { openDonation } = useDonation()
+  const [copied, setCopied] = useState(false)
+
+  /* Copy the number to the clipboard, then the tel: link opens the dialer —
+     donors on phones call directly; on desktop the number stays copied. */
+  const callNow = () => {
+    navigator.clipboard
+      .writeText(org.phone)
+      .then(() => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2400)
+      })
+      .catch(() => {})
+  }
 
   return (
     <section id="donate" className="scroll-mt-24 px-4 py-24 sm:px-6 sm:py-28 lg:px-8" aria-labelledby="donate-title">
@@ -49,6 +63,21 @@ export default function DonationCTA() {
                 <LuHeart className="h-[18px] w-[18px] text-brand-600 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
                 {donationCta.primaryCta.label}
               </button>
+              <a
+                href={`tel:${org.phone.replace(/\s/g, "")}`}
+                onClick={callNow}
+                className="group inline-flex items-center gap-2.5 rounded-full border border-white/25 px-8 py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/10 sm:text-base"
+              >
+                {copied ? (
+                  <LuCheck className="h-4 w-4 text-brand-200" aria-hidden="true" />
+                ) : (
+                  <LuPhone
+                    className="h-4 w-4 text-brand-200 transition-transform duration-300 group-hover:scale-110"
+                    aria-hidden="true"
+                  />
+                )}
+                Call {org.phone}
+              </a>
               <a
                 href={donationCta.secondaryCta.href}
                 className="inline-flex items-center gap-2 rounded-full border border-white/25 px-8 py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/10 sm:text-base"

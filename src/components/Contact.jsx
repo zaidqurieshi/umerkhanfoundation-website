@@ -5,8 +5,7 @@ import { contact, org } from "../data/content"
 
 /**
  * Contact — verified information only. Phone/email render automatically
- * (once set in content.js); until then an honest "coming soon" card is
- * shown. Right side: live Google map.
+ * once set in content.js. Right side: live Google map.
  */
 export default function Contact() {
   const cards = [
@@ -108,13 +107,6 @@ export default function Contact() {
                 </div>
               </Reveal>
             )}
-
-            <Reveal delay={0.2}>
-              <p className="flex items-start gap-2.5 rounded-2xl border-2 border-dashed border-brand-200/80 bg-brand-50/40 px-5 py-4 text-[13px] leading-relaxed text-ink/55">
-                <LuPhone className="mt-0.5 h-4 w-4 shrink-0 text-brand-300" aria-hidden="true" />
-                {contact.pendingNote}
-              </p>
-            </Reveal>
           </div>
         </div>
 

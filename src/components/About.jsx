@@ -4,9 +4,9 @@ import Reveal from "./ui/Reveal"
 import { about } from "../data/content"
 
 /**
- * Editorial About section — magazine-style alternating image/text rows,
- * the foundation's verified mission as a pull-quote, and its six
- * publicly stated areas of support as a checklist.
+ * Editorial About section — feature photo beside the foundation's verified
+ * mission pull-quote, supporting paragraphs, and its six publicly stated
+ * areas of support as a checklist.
  */
 export default function About() {
   return (
@@ -63,39 +63,6 @@ export default function About() {
                 </li>
               ))}
             </ul>
-          </Reveal>
-        </div>
-
-        {/* Row 2 — text | image */}
-        <div className="mt-24 grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-          <Reveal className="order-2 lg:order-1" delay={0.1}>
-            <p className="font-display text-2xl font-medium tracking-tight text-ink sm:text-3xl">{about.story.title}</p>
-            <p className="mt-5 leading-relaxed text-ink/65">{about.story.text}</p>
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm font-medium text-ink/50">
-              <span>Nonprofit organization</span>
-              <span aria-hidden="true" className="h-1 w-1 self-center rounded-full bg-brand-400" />
-              <span>Community-funded</span>
-              <span aria-hidden="true" className="h-1 w-1 self-center rounded-full bg-brand-400" />
-              <span>Srinagar, J&amp;K</span>
-            </div>
-          </Reveal>
-
-          <Reveal className="relative order-1 lg:order-2">
-            <div
-              className="absolute -bottom-5 -left-5 h-full w-full rounded-[2rem] bg-brand-100/70"
-              aria-hidden="true"
-            />
-            <div className="relative overflow-hidden rounded-[2rem] shadow-soft ring-1 ring-black/5">
-              <img
-                src={about.imageB.src}
-                alt={about.imageB.alt}
-                width={1100}
-                height={825}
-                loading="lazy"
-                decoding="async"
-                className="aspect-[4/3] w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
-              />
-            </div>
           </Reveal>
         </div>
       </div>

@@ -5,7 +5,6 @@ import Hero from "./components/Hero"
 import ImpactStats from "./components/ImpactStats"
 import About from "./components/About"
 import Initiatives from "./components/Initiatives"
-import InstagramGallery from "./components/InstagramGallery"
 import HowToHelp from "./components/HowToHelp"
 import DonationCTA from "./components/DonationCTA"
 import Contact from "./components/Contact"
@@ -16,7 +15,7 @@ import DonationModal from "./components/DonationModal"
 /**
  * Umer Khan Foundation — one-page site.
  * Order: ticker → nav → hero → impact → about → work →
- * gallery (Moments from the field) → help → donate CTA → contact → footer.
+ * help → donate CTA → contact → footer.
  */
 export default function App() {
   return (
@@ -37,7 +36,6 @@ export default function App() {
         <ImpactStats />
         <About />
         <Initiatives />
-        <InstagramGallery />
         <HowToHelp />
         <DonationCTA />
         <Contact />
