@@ -94,7 +94,7 @@ export const hero = {
   },
   imageSmall: {
     src: "/hero-small.jpg",
-    alt: "Umer Khan Foundation volunteers in branded vests distributing relief supplies to families in a village in the Kashmir valley",
+    alt: "Volunteer arranging red relief ration kits laid out along a street in Srinagar ahead of distribution",
   },
   impactCard: {
     label: "Community Impact",
