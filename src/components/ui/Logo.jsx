@@ -1,26 +1,60 @@
 /**
  * Brand mark & wordmark.
  *
- * NOTE: The foundation's official logo image isn't publicly retrievable,
- * so this is a clean typographic mark (rounded green tile + heart).
- * To use the real logo: drop `logo.png` into /public and replace the
- * <LogoMark/> SVG below with <img src="/logo.png" alt="Umer Khan Foundation" />.
+ * LogoMark: SVG recreation of the official UKF lettermark —
+ *   a large U on the left, with K and F formed by two horizontal
+ *   bars crossing a shared vertical stem on the right.
+ *   Transparent background — works on light and dark surfaces.
  */
 
-export function LogoMark({ className = "h-10 w-10" }) {
+export function LogoMark({ className = "h-10 w-10", variant = "dark" }) {
+  const fill = variant === "light" ? "#ffffff" : "#2d5a27"
   return (
-    <svg viewBox="0 0 64 64" className={className} role="img" aria-label="Umer Khan Foundation mark">
-      <defs>
-        <linearGradient id="ukf-mark-gradient" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#17925b" />
-          <stop offset="100%" stopColor="#0a3d2a" />
-        </linearGradient>
-      </defs>
-      <rect width="64" height="64" rx="16" fill="url(#ukf-mark-gradient)" />
+    <svg
+      viewBox="0 0 120 80"
+      className={className}
+      role="img"
+      aria-label="UKF — Umer Khan Foundation"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* ── U ── thick U shape: two legs + curved base */}
+      {/* Left leg */}
+      <rect x="0" y="0" width="18" height="65" rx="2" fill={fill} />
+      {/* Right leg of U */}
+      <rect x="40" y="0" width="18" height="65" rx="2" fill={fill} />
+      {/* Curved base joining the two legs */}
       <path
-        d="M32 45C23.4 38.9 18.6 33.6 18.6 28.4c0-4.1 3.1-7.2 7-7.2 2.7 0 5.1 1.6 6.4 4 1.3-2.4 3.7-4 6.4-4 3.9 0 7 3.1 7 7.2 0 5.2-4.8 10.5-13.4 16.6Z"
-        fill="#fff"
+        d="M0 55 Q0 80 29 80 Q58 80 58 55"
+        stroke={fill}
+        strokeWidth="18"
+        strokeLinecap="round"
+        fill="none"
       />
+
+      {/* ── K & F share a vertical stem ── */}
+      {/* Shared vertical stem */}
+      <rect x="72" y="0" width="18" height="80" rx="2" fill={fill} />
+
+      {/* K — upper diagonal arm (top-right) */}
+      <path
+        d="M90 38 L120 4"
+        stroke={fill}
+        strokeWidth="16"
+        strokeLinecap="round"
+      />
+      {/* K — lower diagonal arm (bottom-right) */}
+      <path
+        d="M90 42 L120 76"
+        stroke={fill}
+        strokeWidth="16"
+        strokeLinecap="round"
+      />
+
+      {/* F — top horizontal bar (shared with K top arm start) */}
+      <rect x="72" y="0" width="46" height="16" rx="2" fill={fill} />
+      {/* F — middle horizontal bar */}
+      <rect x="72" y="32" width="36" height="14" rx="2" fill={fill} />
     </svg>
   )
 }
@@ -29,7 +63,10 @@ export default function Logo({ variant = "dark", className = "" }) {
   const isLight = variant === "light"
   return (
     <span className={`inline-flex items-center gap-3 ${className}`}>
-      <LogoMark className="h-10 w-10 shrink-0 sm:h-11 sm:w-11" />
+      <LogoMark
+        className="h-8 w-auto shrink-0 sm:h-9"
+        variant={variant}
+      />
       <span className="flex flex-col leading-none">
         <span
           className={`font-display text-[17px] font-semibold tracking-tight sm:text-lg ${
