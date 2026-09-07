@@ -62,7 +62,6 @@ export const navLinks = [
   { label: "About", href: "#about" },
   { label: "Our Work", href: "#work" },
   { label: "Impact", href: "#impact" },
-  { label: "News", href: "#news" },
   { label: "Contact", href: "#contact" },
 ]
 
@@ -145,8 +144,8 @@ export const about = {
     "Financial Assistance",
   ],
   imageA: {
-    src: img(1018, 1000, 1250),
-    alt: "Foundation volunteers and community members in Srinagar — replace with a real foundation photograph",
+    src: "/about.jpg",
+    alt: "Foundation volunteers loading emergency aid kits beside a Soulout Ambulance vehicle in Srinagar",
   },
   imageB: {
     src: img(1035, 1100, 825),
@@ -220,113 +219,13 @@ export const initiatives = {
   ],
 }
 
-/* ── 7 · Featured stories / slider — real campaign names ──────── */
-
-export const stories = {
-  eyebrow: "Featured Stories",
-  title: "Moments from the field.",
-  hint: "Autoplays gently — drag, swipe or use the arrows.",
-  items: [
-    {
-      category: "Winter Relief",
-      title: "Winter Kit Kashmir",
-      description:
-        "Warm clothing and winter essentials for families bracing the harsh Kashmiri winter — the foundation's seasonal cold-weather drive.",
-      image: {
-        src: img(1036, 1800, 1000),
-        alt: "Winter Kit Kashmir campaign — replace with a photo from a winter kit distribution",
-      },
-      href: IG_URL,
-      date: null, // add real dates when publicly known
-    },
-    {
-      category: "Food Security",
-      title: "Food for All",
-      description:
-        "Food supplies reaching households across the community — so that no family is left behind in difficult times.",
-      image: {
-        src: img(1044, 1800, 1000),
-        alt: "Food for All campaign — replace with a photo from a food distribution drive",
-      },
-      href: IG_URL,
-      date: null,
-    },
-    {
-      category: "Zakaat & Giving",
-      title: "Zakaat",
-      description:
-        "Collecting and distributing Zakaat with care — reaching those it is meant for, directly and with dignity.",
-      image: {
-        src: img(1045, 1800, 1000),
-        alt: "Zakaat campaign — replace with a photo representing the foundation's zakaat distribution",
-      },
-      href: IG_URL,
-      date: null,
-    },
-    {
-      category: "Community Support",
-      title: "Ehsaas 2.0",
-      description:
-        "The second chapter of the foundation's Ehsaas initiative — extending direct, personal support to those who need it most.",
-      image: {
-        src: img(1047, 1800, 1000),
-        alt: "Ehsaas 2.0 initiative — replace with a photo from an Ehsaas community activity",
-      },
-      href: IG_URL,
-      date: null,
-    },
-  ],
-}
-
-/* ── 8 · Latest news / updates ────────────────────────────────── */
-
-export const news = {
-  eyebrow: "Latest Updates",
-  title: "News from the foundation.",
-  description: "Campaigns and programmes the foundation is currently sharing publicly.",
-  viewAll: { label: "View All Updates", href: IG_URL },
-  items: [
-    {
-      date: null, // add real dates when publicly known
-      category: "Campaign",
-      title: "Winter Kit Kashmir — essentials for the cold season",
-      description:
-        "The seasonal drive providing warm winter essentials to families across Kashmir. Follow along for the latest distributions.",
-      image: { src: img(1049, 800, 560), alt: "Winter Kit Kashmir update — replace with a recent campaign photograph" },
-      href: IG_URL,
-    },
-    {
-      date: null,
-      category: "Programme",
-      title: "O₂ support for patients in need",
-      description: "Helping ensure patients across Srinagar can access oxygen support when it matters most.",
-      image: { src: img(1050, 800, 560), alt: "O₂ support update — replace with a recent programme photograph" },
-      href: IG_URL,
-    },
-    {
-      date: null,
-      category: "Campaign",
-      title: "Food for All — essentials reaching households",
-      description: "Essential food supplies distributed to households facing hardship in and around Srinagar.",
-      image: { src: img(1052, 800, 560), alt: "Food for All update — replace with a recent distribution photograph" },
-      href: IG_URL,
-    },
-    {
-      date: null,
-      category: "Community",
-      title: "Ehsaas 2.0 — direct community support",
-      description: "The foundation's continuing initiative extending hands-on help across the valley.",
-      image: { src: img(1053, 800, 560), alt: "Ehsaas 2.0 update — replace with a recent community activity photograph" },
-      href: IG_URL,
-    },
-  ],
-}
-
-/* ── 9 · Instagram gallery — replace with real post photos ────── */
+/* ── 7 · Instagram gallery — "Moments from the field" feed ────── */
 
 export const gallery = {
   eyebrow: "On Instagram",
-  title: "Follow the work, frame by frame.",
+  title: "Moments from the field.",
+  description:
+    "Photos straight from the foundation's Instagram feed — follow along for the latest from the field.",
   handle: "@umerkhanfoundation",
   url: IG_URL,
   followLabel: "Follow us on Instagram",

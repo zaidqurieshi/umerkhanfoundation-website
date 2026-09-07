@@ -25,8 +25,8 @@ export default function About() {
               <img
                 src={about.imageA.src}
                 alt={about.imageA.alt}
-                width={1000}
-                height={1250}
+                width={1073}
+                height={1600}
                 loading="lazy"
                 decoding="async"
                 className="aspect-[4/5] w-full object-cover transition-transform duration-700 hover:scale-[1.03]"

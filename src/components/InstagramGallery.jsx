@@ -12,7 +12,12 @@ export default function InstagramGallery() {
   return (
     <section id="gallery" className="scroll-mt-24 py-24 sm:py-32" aria-labelledby="gallery-title">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionHeading id="gallery-title" eyebrow={gallery.eyebrow} title={gallery.title} />
+        <SectionHeading
+          id="gallery-title"
+          eyebrow={gallery.eyebrow}
+          title={gallery.title}
+          description={gallery.description}
+        />
 
         <Reveal className="mt-12" delay={0.1}>
           <div
