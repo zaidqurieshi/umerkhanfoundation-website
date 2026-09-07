@@ -333,8 +333,8 @@ export const donation = {
     completedLabel: "I've Completed the Payment",
   },
   gateway: {
-    enabled: false,
-    url: null,
+    enabled: true,
+    url: "https://rzp.io/rzp/QQUyx9e",
     label: "Pay Online",
     completedLabel: "I've Completed the Payment",
   },
