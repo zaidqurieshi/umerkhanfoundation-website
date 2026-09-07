@@ -300,13 +300,15 @@ export const donationCta = {
 }
 
 /* ── 12/13 · Donation system architecture ──────────────────────── */
-/*  NOTHING BELOW IS LIVE — do not fill in placeholder payment data.
- *  When the foundation provides real details, set `enabled: true`
- *  and complete the fields — the donation modal wires it all up:
+/*  QR is LIVE — the foundation's verified UPI QR (J&K Bank VPA,
+ *  decoded directly from their code: pa=TM015472797@jkb).
+ *  Gateway is still placeholder — do not fill in unverified data.
+ *  The donation modal wires the fields up as follows:
  *
  *  qr.codes[]  → one selectable card per QR code:
  *                · image: file path in /public (e.g. "/donate-qr-1.png")
- *                · upiId: the UPI ID string (enables the "Copy" button)
+ *                · upiId: the UPI ID string (enables the "Copy" button and
+ *                  the "pay with PhonePe / Paytm / Google Pay" app links)
  *                · note:  payment instructions shown under the QR
  *  gateway.url → payment gateway link (button opens it in a new tab)
  *  gateway.label → button text, e.g. "Donate via Razorpay"
@@ -319,12 +321,12 @@ export const donation = {
   chooseTitle: "Support Umer Khan Foundation",
   chooseSubtitle: "Choose how you'd like to donate",
   qr: {
-    enabled: false,
+    enabled: true,
     codes: [
       {
         label: "UPI · QR Code",
-        image: null,
-        upiId: null,
+        image: "/donate-qr.png",
+        upiId: "TM015472797@jkb",
         note: null,
       },
     ],

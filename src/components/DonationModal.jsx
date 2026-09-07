@@ -12,11 +12,24 @@ import {
   LuQrCode,
   LuX,
 } from "react-icons/lu"
+import { SiGooglepay, SiPaytm, SiPhonepe } from "react-icons/si"
 import { LogoMark } from "./ui/Logo"
 import { donation, org } from "../data/content"
 import { useDonation } from "../context/DonationContext"
 
 const STEPS = { choose: "Choose a method", qr: "Scan a QR code", online: "Pay online", done: "Thank you" }
+
+/* UPI intent deep links — open the payer's installed app with the payee
+   pre-filled; the amount is entered inside the app. `upi://pay` lets the
+   phone show its own chooser across every installed UPI app. */
+const UPI_APPS = [
+  { name: "PhonePe", scheme: "phonepe://pay", Icon: SiPhonepe },
+  { name: "Paytm", scheme: "paytmmp://pay", Icon: SiPaytm },
+  { name: "Google Pay", scheme: "tez://upi/pay", Icon: SiGooglepay },
+]
+
+const upiAppHref = (scheme, upiId) =>
+  `${scheme}?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(donation.orgName)}&cu=INR&tn=${encodeURIComponent("Donation")}`
 
 /**
  * Premium donation sheet — Apple-style payment experience.
@@ -256,6 +269,34 @@ export default function DonationModal() {
                             )}
                             {copied ? "Copied" : "Copy ID"}
                           </button>
+                        </div>
+                      )}
+                      {qrConfig.upiId && (
+                        <div className="flex flex-col gap-2.5">
+                          <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-ink/40">
+                            Or pay without scanning
+                          </p>
+                          <div className="grid grid-cols-3 gap-2.5">
+                            {UPI_APPS.map(({ name, scheme, Icon }) => (
+                              <a
+                                key={scheme}
+                                href={upiAppHref(scheme, qrConfig.upiId)}
+                                className="group flex flex-col items-center gap-1.5 rounded-2xl border border-black/[0.08] bg-white px-2 py-3 transition-all duration-300 hover:border-brand-300 hover:bg-brand-50/60 hover:shadow-card"
+                              >
+                                <Icon
+                                  className="h-6 w-6 text-ink/75 transition-colors group-hover:text-brand-700"
+                                  aria-hidden="true"
+                                />
+                                <span className="text-[12px] font-semibold text-ink">{name}</span>
+                              </a>
+                            ))}
+                          </div>
+                          <a
+                            href={upiAppHref("upi://pay", qrConfig.upiId)}
+                            className="rounded-full border border-black/10 py-2.5 text-center text-[13px] font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
+                          >
+                            Choose from all UPI apps
+                          </a>
                         </div>
                       )}
                       {qrConfig.note && <p className="text-[13px] leading-relaxed text-ink/55">{qrConfig.note}</p>}
