@@ -18,7 +18,13 @@ import { LogoMark } from "./ui/Logo"
 import { donation, org } from "../data/content"
 import { useDonation } from "../context/DonationContext"
 
-const STEPS = { choose: "Choose a method", qr: "Scan a QR code", online: "Pay online", done: "Thank you" }
+const STEPS = {
+  choose: "Choose a method",
+  qr: "Scan a QR code",
+  online: "Pay online",
+  receipt: "Donation receipt",
+  done: "Thank you",
+}
 
 /* UPI intent deep links — open the payer's installed app with the payee
    pre-filled; the amount is entered inside the app. Only apps that publish
@@ -50,6 +56,9 @@ export default function DonationModal() {
   const [activeQr, setActiveQr] = useState(0)
   const [copied, setCopied] = useState(false)
   const [upiFail, setUpiFail] = useState(null)
+  const [pendingMethod, setPendingMethod] = useState(null)
+  const [amount, setAmount] = useState("")
+  const [receipt, setReceipt] = useState(null)
   const panelRef = useRef(null)
   const reduce = useReducedMotion()
 
@@ -60,8 +69,28 @@ export default function DonationModal() {
       setActiveQr(0)
       setCopied(false)
       setUpiFail(null)
+      setPendingMethod(null)
+      setAmount("")
+      setReceipt(null)
     }
   }, [isOpen])
+
+  /* Web pages can't verify UPI/Razorpay results directly — so auto-detect the
+     payer returning from the UPI app or the payment tab and offer a receipt
+     they confirm with the amount they paid. */
+  useEffect(() => {
+    if (!pendingMethod || step === "receipt" || step === "done") return undefined
+    let left = false
+    const onVis = () => {
+      if (document.hidden) {
+        left = true
+      } else if (left) {
+        setStep("receipt")
+      }
+    }
+    document.addEventListener("visibilitychange", onVis)
+    return () => document.removeEventListener("visibilitychange", onVis)
+  }, [pendingMethod, step])
 
   /* focus trap + escape + scroll lock + focus restore */
   useEffect(() => {
@@ -120,6 +149,7 @@ export default function DonationModal() {
      is null for the all-apps chooser, which fails only with no UPI apps. */
   const attemptUpi = (name) => () => {
     setUpiFail(null)
+    setPendingMethod(name || "UPI")
     let opened = false
     const mark = () => {
       opened = true
@@ -137,6 +167,25 @@ export default function DonationModal() {
       window.removeEventListener("blur", onGone)
       if (!opened) setUpiFail(name)
     }, 2000)
+  }
+
+  /* Simple receipt — the amount is the donor's own confirmation of what they
+     paid in their UPI app or on Razorpay. */
+  const generateReceipt = () => {
+    const value = Math.round(Number(amount))
+    if (!value || value <= 0) return
+    setReceipt({
+      no: `UKF-${Date.now().toString(36).toUpperCase()}`,
+      date: new Date().toLocaleString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      }),
+      method: pendingMethod || "UPI",
+      amount: value,
+    })
   }
 
   const qrConfig = donation.qr.codes?.[activeQr] ?? donation.qr.codes?.[0]
@@ -194,7 +243,7 @@ export default function DonationModal() {
               </button>
             </div>
 
-            {step !== "choose" && step !== "done" && (
+            {step !== "choose" && step !== "receipt" && step !== "done" && (
               <div className="px-6">
                 <button
                   type="button"
@@ -363,7 +412,10 @@ export default function DonationModal() {
                       {qrConfig.note && <p className="text-[13px] leading-relaxed text-ink/55">{qrConfig.note}</p>}
                       <button
                         type="button"
-                        onClick={() => setStep("done")}
+                        onClick={() => {
+                          setPendingMethod("UPI · QR code")
+                          setStep("receipt")
+                        }}
                         className="mt-1 w-full rounded-full bg-brand-600 py-3.5 text-sm font-semibold text-white shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-700"
                       >
                         {donation.qr.completedLabel}
@@ -394,6 +446,7 @@ export default function DonationModal() {
                         href={donation.gateway.url}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => setPendingMethod("Pay Online · Razorpay")}
                         className="inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-brand-600 py-3.5 text-sm font-semibold text-white shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-700"
                       >
                         <LuCreditCard className="h-4 w-4" aria-hidden="true" />
@@ -402,7 +455,10 @@ export default function DonationModal() {
                       </a>
                       <button
                         type="button"
-                        onClick={() => setStep("done")}
+                        onClick={() => {
+                          setPendingMethod("Pay Online · Razorpay")
+                          setStep("receipt")
+                        }}
                         className="w-full rounded-full border border-black/10 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
                       >
                         {donation.gateway.completedLabel}
@@ -422,6 +478,97 @@ export default function DonationModal() {
                     <LuInfo className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink/35" aria-hidden="true" />
                     {donation.receiptNote}
                   </p>
+                </div>
+              )}
+
+              {step === "receipt" && (
+                <div className="flex flex-col gap-5 py-2">
+                  {!receipt ? (
+                    <>
+                      <div className="text-center">
+                        <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-100 text-brand-700">
+                          <LuCheck className="h-7 w-7" aria-hidden="true" />
+                        </span>
+                        <h3 className="mt-4 font-display text-2xl font-medium tracking-tight text-ink">Welcome back</h3>
+                        <p className="mx-auto mt-2 max-w-[300px] text-sm leading-relaxed text-ink/55">
+                          {pendingMethod
+                            ? `If your ${pendingMethod} payment went through, enter the amount you paid to get your donation receipt.`
+                            : "If your payment went through, enter the amount you paid to get your donation receipt."}
+                        </p>
+                      </div>
+
+                      <label className="block">
+                        <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-ink/45">
+                          Amount donated (₹)
+                        </span>
+                        <input
+                          type="number"
+                          min="1"
+                          step="1"
+                          inputMode="numeric"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          placeholder="e.g. 500"
+                          className="mt-1.5 w-full rounded-xl border border-black/10 px-4 py-3 text-sm font-medium text-ink outline-none transition-colors focus:border-brand-400"
+                        />
+                      </label>
+
+                      <button
+                        type="button"
+                        onClick={generateReceipt}
+                        disabled={!amount || Number(amount) <= 0}
+                        className="rounded-full bg-brand-700 py-3.5 text-sm font-semibold text-white shadow-card transition-all duration-300 hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        Generate receipt
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="rounded-2xl border border-black/[0.08] bg-white p-5 text-left shadow-card">
+                        <div className="flex items-center justify-between gap-3 border-b border-black/[0.06] pb-3">
+                          <span className="font-display text-lg font-medium text-ink">{donation.orgName}</span>
+                          <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-ink/40">
+                            Donation receipt
+                          </span>
+                        </div>
+                        <dl className="mt-3 space-y-2 text-sm">
+                          <div className="flex items-center justify-between gap-3">
+                            <dt className="text-ink/50">Receipt no.</dt>
+                            <dd className="font-medium text-ink">{receipt.no}</dd>
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <dt className="text-ink/50">Date</dt>
+                            <dd className="font-medium text-ink">{receipt.date}</dd>
+                          </div>
+                          <div className="flex items-center justify-between gap-3">
+                            <dt className="text-ink/50">Method</dt>
+                            <dd className="font-medium text-ink">{receipt.method}</dd>
+                          </div>
+                          <div className="flex items-center justify-between gap-3 border-t border-black/[0.06] pt-2.5">
+                            <dt className="font-semibold text-ink">Amount received</dt>
+                            <dd className="font-display text-lg font-semibold text-brand-800">
+                              ₹{receipt.amount.toLocaleString("en-IN")}
+                            </dd>
+                          </div>
+                        </dl>
+                        <p className="mt-3 text-[12px] leading-relaxed text-ink/50">
+                          Received with thanks — your contribution helps the foundation reach more families across
+                          Srinagar &amp; Kashmir.
+                        </p>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPendingMethod(null)
+                          setStep("done")
+                        }}
+                        className="rounded-full bg-brand-700 py-3.5 text-sm font-semibold text-white shadow-card transition-all duration-300 hover:bg-brand-800"
+                      >
+                        Continue
+                      </button>
+                    </>
+                  )}
                 </div>
               )}
 
