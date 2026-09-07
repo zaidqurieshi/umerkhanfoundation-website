@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react"
 import { useInView, useReducedMotion } from "framer-motion"
-import { LuInfo } from "react-icons/lu"
 import SectionHeading from "./ui/SectionHeading"
 import Reveal from "./ui/Reveal"
 import { impact } from "../data/content"
@@ -72,13 +71,6 @@ export default function ImpactStats() {
               </Reveal>
             ))}
           </div>
-
-          <Reveal delay={0.2}>
-            <p className="mt-14 flex max-w-2xl items-start gap-2.5 border-t border-white/10 pt-6 text-xs leading-relaxed text-white/45">
-              <LuInfo className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-              {impact.note}
-            </p>
-          </Reveal>
         </div>
       </div>
     </section>
