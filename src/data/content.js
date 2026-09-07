@@ -116,7 +116,7 @@ export const impact = {
     { value: 6, suffix: "", label: "Areas of support", caption: "Medical · O₂ · orphan care · education · food · financial help" },
     { value: 4, suffix: "", label: "Seasonal campaigns", caption: "Winter Kit Kashmir · Zakaat · Food for All · Ehsaas 2.0" },
     { value: 140, suffix: "+", label: "Registered Families", caption: "Registered families being across all divisions" },
-    { value: 1100, suffix: "+", label: "Community on Facebook", caption: "People following the mission on the public page", format: "k" },
+    { value: 20000, suffix: "+", label: "Strong Community", caption: "People following the mission", format: "k" },
   ],
   note: "Figures are drawn from the foundation's public channels. Detailed programme statistics will be published here as the foundation shares them.",
 }
