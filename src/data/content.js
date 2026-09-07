@@ -89,8 +89,8 @@ export const hero = {
   primaryCta: { label: "Donate Now" },
   secondaryCta: { label: "Discover Our Work", href: "#work" },
   image: {
-    src: img(1015, 1100, 1375),
-    alt: "The Kashmir valley community served by Umer Khan Foundation — replace with a photograph from a foundation distribution drive",
+    src: "/hero.jpg",
+    alt: "Umer Khan Foundation volunteers in branded vests distributing relief supplies to families in a village in the Kashmir valley",
   },
   imageSmall: {
     src: img(1011, 520, 660),

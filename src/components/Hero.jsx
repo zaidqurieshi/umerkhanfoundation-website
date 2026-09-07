@@ -114,7 +114,7 @@ export default function Hero() {
                 src={hero.image.src}
                 alt={hero.image.alt}
                 width={1100}
-                height={1375}
+                height={1400}
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
