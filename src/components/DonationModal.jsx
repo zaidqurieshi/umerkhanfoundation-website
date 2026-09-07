@@ -32,10 +32,10 @@ const STEPS = {
    India (Amazon Pay, CRED, bank apps, …) is reached through the generic
    `upi://pay` chooser, which lists all installed UPI apps. */
 const UPI_APPS = [
-  { name: "PhonePe", scheme: "phonepe://pay", Icon: SiPhonepe },
-  { name: "Google Pay", scheme: "tez://upi/pay", Icon: SiGooglepay },
-  { name: "Paytm", scheme: "paytmmp://pay", Icon: SiPaytm },
-  { name: "BHIM", scheme: "bhim://pay", Icon: LuSmartphone },
+  { name: "PhonePe", scheme: "phonepe://pay", Icon: SiPhonepe, bg: "bg-[#5f259f]", fg: "text-white" },
+  { name: "Google Pay", scheme: "tez://upi/pay", Icon: SiGooglepay, bg: "bg-white", fg: "text-[#4285F4]", border: "border border-black/[0.08]" },
+  { name: "Paytm", scheme: "paytmmp://pay", Icon: SiPaytm, bg: "bg-[#002970]", fg: "text-white" },
+  { name: "BHIM", scheme: "bhim://pay", Icon: LuSmartphone, bg: "bg-[#00529a]", fg: "text-white" },
 ]
 
 const upiAppHref = (scheme, upiId) =>
@@ -59,7 +59,6 @@ export default function DonationModal() {
   const [pendingMethod, setPendingMethod] = useState(null)
   const [amount, setAmount] = useState("")
   const [receipt, setReceipt] = useState(null)
-  const [manualUpi, setManualUpi] = useState("")
   const panelRef = useRef(null)
   const reduce = useReducedMotion()
 
@@ -73,7 +72,6 @@ export default function DonationModal() {
       setPendingMethod(null)
       setAmount("")
       setReceipt(null)
-      setManualUpi("")
     }
   }, [isOpen])
 
@@ -193,19 +191,6 @@ export default function DonationModal() {
   const qrConfig = donation.qr.codes?.[activeQr] ?? donation.qr.codes?.[0]
   const qrReady = donation.qr.enabled && qrConfig?.image
 
-  /* Pay by a manually entered UPI ID — fires the generic upi:// intent so the
-     installed UPI app shows its own approve/deny prompt. Falls back to the
-     foundation's own UPI ID when left blank. */
-  const payManualUpi = () => {
-    const id = (manualUpi || qrConfig?.upiId || "").trim()
-    if (!id || !id.includes("@")) {
-      setUpiFail("invalid")
-      return
-    }
-    setUpiFail(null)
-    setPendingMethod("UPI ID")
-    window.location.href = upiAppHref("upi://pay", id)
-  }
   const gatewayReady = donation.gateway.enabled && donation.gateway.url
 
   return (
@@ -401,19 +386,19 @@ export default function DonationModal() {
                               </span>
                             </p>
                           )}
-                          <div className="grid grid-cols-2 gap-2.5">
-                            {UPI_APPS.map(({ name, scheme, Icon }) => (
+                          <div className="grid grid-cols-2 gap-3">
+                            {UPI_APPS.map(({ name, scheme, Icon, bg, fg, border }) => (
                               <a
                                 key={scheme}
                                 href={upiAppHref(scheme, qrConfig.upiId)}
                                 onClick={attemptUpi(name)}
-                                className="group flex items-center gap-2.5 rounded-2xl border border-black/[0.08] bg-white px-3 py-3 transition-all duration-300 hover:border-brand-300 hover:bg-brand-50/60 hover:shadow-card"
+                                className={`group flex items-center gap-2.5 rounded-2xl px-3.5 py-3 transition-all duration-300 hover:opacity-90 hover:shadow-card ${bg} ${border ?? ""}`}
                               >
                                 <Icon
-                                  className="h-6 w-6 shrink-0 text-ink/75 transition-colors group-hover:text-brand-700"
+                                  className={`h-6 w-6 shrink-0 ${fg}`}
                                   aria-hidden="true"
                                 />
-                                <span className="text-[13px] font-semibold text-ink">{name}</span>
+                                <span className={`text-[13px] font-semibold ${fg}`}>{name}</span>
                               </a>
                             ))}
                           </div>
@@ -425,35 +410,8 @@ export default function DonationModal() {
                             Choose from all UPI apps
                           </a>
                           <p className="text-center text-[11px] leading-snug text-ink/40">
-                            The all-apps option opens your phone's app picker — Amazon Pay, CRED, bank apps and
-                            every other UPI app installed on your device.
+                            Opens your phone's app picker — Amazon Pay, CRED, bank apps and every other UPI app installed on your device.
                           </p>
-
-                          <div className="rounded-2xl border border-black/[0.08] bg-white p-4">
-                            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-ink/40">
-                              Pay by UPI ID
-                            </p>
-                            <input
-                              type="text"
-                              value={manualUpi}
-                              onChange={(e) => setManualUpi(e.target.value)}
-                              placeholder={qrConfig.upiId}
-                              autoComplete="off"
-                              spellCheck="false"
-                              className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 text-sm font-medium text-ink outline-none transition-colors focus:border-brand-400"
-                            />
-                            <button
-                              type="button"
-                              onClick={payManualUpi}
-                              className="mt-2.5 w-full rounded-full border border-black/10 py-2.5 text-center text-[13px] font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
-                            >
-                              Send to your UPI app to approve
-                            </button>
-                            <p className="mt-2 text-center text-[11px] leading-snug text-ink/40">
-                              Pre-filled with the foundation's UPI ID — your UPI app will ask you to approve the
-                              payment.
-                            </p>
-                          </div>
                         </div>
                       )}
                       {qrConfig.note && <p className="text-[13px] leading-relaxed text-ink/55">{qrConfig.note}</p>}
