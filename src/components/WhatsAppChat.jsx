@@ -2,7 +2,7 @@ import { SiWhatsapp } from "react-icons/si"
 import { useDonation } from "../context/DonationContext"
 
 const WHATSAPP_PHONE = "919596581009"
-const WHATSAPP_MESSAGE = "He Umer Khan Foundation. I would like to enquire or require assistance."
+const WHATSAPP_MESSAGE = "Hey Umer Khan Foundation. I would like to enquire or require assistance."
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
 
 /**
