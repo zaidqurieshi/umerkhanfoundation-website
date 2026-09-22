@@ -66,11 +66,16 @@ export const navLinks = [
 
 export const ticker = {
   items: [
-    { label: "Latest update", text: "Umer Khan Foundation continues its work for the community across Srinagar & Kashmir" },
-    { label: "Featured campaign", text: "Winter Kit Kashmir — follow the latest on Instagram" },
-    { label: "Support", text: "Every contribution helps us reach more families" },
+    { text: "Medical Assistance" },
+    { text: "Montly Food Assistance" },
+    { text: "Oxygen Support" },
+    { text: "Orphan Care" },
+    { text: "Educational Assistance" },
+    { text: "Cash Assistance" },
+    { text: "One Time Medical Assistance" },
+    { text: "Montly Food Assistance" },
   ],
-  cta: { label: "Support our mission", href: "#help" },
+  cta: null,
 }
 
 /* ── 3 · Hero ─────────────────────────────────────────────────── */
@@ -255,7 +260,7 @@ export const donationCta = {
  *  gateway.url → payment gateway link (button opens it in a new tab)
  *  gateway.label → button text, e.g. "Donate via Razorpay"
  *
- *  The "I've Completed the Payment" action and receipt step activate
+ *  The "I've Completed the Payment" action activates
  *  automatically once any method is enabled.
  */
 export const donation = {

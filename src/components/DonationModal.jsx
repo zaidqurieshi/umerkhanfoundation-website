@@ -22,7 +22,6 @@ const STEPS = {
   choose: "Choose a method",
   qr: "Scan a QR code",
   online: "Pay online",
-  receipt: "Donation receipt",
   done: "Thank you",
 }
 
@@ -57,8 +56,6 @@ export default function DonationModal() {
   const [copied, setCopied] = useState(false)
   const [upiFail, setUpiFail] = useState(null)
   const [pendingMethod, setPendingMethod] = useState(null)
-  const [amount, setAmount] = useState("")
-  const [receipt, setReceipt] = useState(null)
   const panelRef = useRef(null)
   const reduce = useReducedMotion()
 
@@ -70,22 +67,18 @@ export default function DonationModal() {
       setCopied(false)
       setUpiFail(null)
       setPendingMethod(null)
-      setAmount("")
-      setReceipt(null)
     }
   }, [isOpen])
 
-  /* Web pages can't verify UPI/Razorpay results directly — so auto-detect the
-     payer returning from the UPI app or the payment tab and offer a receipt
-     they confirm with the amount they paid. */
+  /* Auto-detect the payer returning from the UPI app or payment tab and transition to thank you */
   useEffect(() => {
-    if (!pendingMethod || step === "receipt" || step === "done") return undefined
+    if (!pendingMethod || step === "done") return undefined
     let left = false
     const onVis = () => {
       if (document.hidden) {
         left = true
       } else if (left) {
-        setStep("receipt")
+        setStep("done")
       }
     }
     document.addEventListener("visibilitychange", onVis)
@@ -125,28 +118,27 @@ export default function DonationModal() {
       }
     }
 
-    document.addEventListener("keydown", onKey)
+    window.addEventListener("keydown", onKey)
     return () => {
-      document.removeEventListener("keydown", onKey)
-      document.body.style.overflow = ""
       clearTimeout(t)
-      previous?.focus?.()
+      window.removeEventListener("keydown", onKey)
+      document.body.style.overflow = ""
+      if (previous && typeof previous.focus === "function") {
+        previous.focus()
+      }
     }
   }, [isOpen, closeDonation])
 
-  const copyUpi = async (upiId) => {
-    try {
-      await navigator.clipboard.writeText(upiId)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2200)
-    } catch {
-      /* clipboard unavailable */
-    }
+  const copyUpiId = (upiId) => {
+    navigator.clipboard
+      .writeText(upiId)
+      .then(() => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2200)
+      })
+      .catch(() => {})
   }
 
-  /* Deep links can't be probed before opening — attempt it, and if the page
-     is still visible ~2s later the app didn't open (not installed). `name`
-     is null for the all-apps chooser, which fails only with no UPI apps. */
   const attemptUpi = (name) => () => {
     setUpiFail(null)
     setPendingMethod(name || "UPI")
@@ -167,25 +159,6 @@ export default function DonationModal() {
       window.removeEventListener("blur", onGone)
       if (!opened) setUpiFail(name)
     }, 2000)
-  }
-
-  /* Simple receipt — the amount is the donor's own confirmation of what they
-     paid in their UPI app or on Razorpay. */
-  const generateReceipt = () => {
-    const value = Math.round(Number(amount))
-    if (!value || value <= 0) return
-    setReceipt({
-      no: `UKF-${Date.now().toString(36).toUpperCase()}`,
-      date: new Date().toLocaleString("en-IN", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-      }),
-      method: pendingMethod || "UPI",
-      amount: value,
-    })
   }
 
   const qrConfig = donation.qr.codes?.[activeQr] ?? donation.qr.codes?.[0]
@@ -244,7 +217,7 @@ export default function DonationModal() {
               </button>
             </div>
 
-            {step !== "choose" && step !== "receipt" && step !== "done" && (
+            {step !== "choose" && step !== "done" && (
               <div className="px-6">
                 <button
                   type="button"
@@ -306,19 +279,20 @@ export default function DonationModal() {
 
               {step === "qr" && (
                 <div className="flex flex-col gap-4">
-                  {donation.qr.codes.length > 1 && (
-                    <div className="flex flex-wrap gap-2">
-                      {donation.qr.codes.map((code, i) => (
+                  {donation.qr.codes?.length > 1 && (
+                    <div className="flex gap-2 rounded-2xl bg-brand-50/70 p-1">
+                      {donation.qr.codes.map((c, i) => (
                         <button
-                          key={code.label ?? i}
+                          key={i}
                           type="button"
                           onClick={() => setActiveQr(i)}
-                          aria-pressed={activeQr === i}
-                          className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
-                            activeQr === i ? "bg-brand-600 text-white" : "bg-brand-50 text-brand-800 hover:bg-brand-100"
+                          className={`flex-1 rounded-xl py-2 text-xs font-semibold transition-all ${
+                            activeQr === i
+                              ? "bg-white text-brand-800 shadow-card"
+                              : "text-ink/60 hover:text-ink"
                           }`}
                         >
-                          {code.label ?? `QR Code ${i + 1}`}
+                          {c.label}
                         </button>
                       ))}
                     </div>
@@ -326,66 +300,64 @@ export default function DonationModal() {
 
                   {qrReady ? (
                     <>
-                      <div className="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-card">
+                      <div className="relative mx-auto flex w-full max-w-[280px] flex-col items-center overflow-hidden rounded-3xl border border-black/[0.08] bg-white p-5 shadow-card">
                         <img
                           src={qrConfig.image}
-                          alt={`${donation.orgName} donation QR code`}
-                          width={480}
-                          height={480}
-                          className="mx-auto aspect-square w-full max-w-[240px] rounded-xl object-contain"
+                          alt={`Official payment QR code for ${donation.orgName}`}
+                          className="aspect-square w-full rounded-2xl object-contain"
+                          loading="eager"
                         />
-                      </div>
-                      {qrConfig.upiId && (
-                        <div className="flex items-center justify-between gap-3 rounded-2xl bg-mist px-4 py-3">
-                          <span className="truncate font-mono text-[13px] font-medium text-ink/80">
-                            {qrConfig.upiId}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => copyUpi(qrConfig.upiId)}
-                            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-brand-600 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-700"
-                          >
-                            {copied ? (
-                              <LuCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                            ) : (
-                              <LuCopy className="h-3.5 w-3.5" aria-hidden="true" />
-                            )}
-                            {copied ? "Copied" : "Copy ID"}
-                          </button>
+                        <div className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-ink/50">
+                          <span className="inline-block h-2 w-2 rounded-full bg-brand-500" aria-hidden="true" />
+                          Official UPI QR · {donation.orgName}
                         </div>
-                      )}
+                      </div>
+
                       {qrConfig.upiId && (
-                        <div className="flex flex-col gap-2.5">
-                          <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-ink/40">
-                            Or pay without scanning
-                          </p>
-                          {upiFail && (
-                            <p
-                              role="alert"
-                              className="flex items-start gap-2 rounded-xl bg-mist px-4 py-3 text-[12.5px] leading-relaxed text-ink/60"
-                            >
-                              <LuInfo className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink/40" aria-hidden="true" />
-                              <span>
-                                {upiFail === "invalid" ? (
-                                  <>
-                                    Please enter a valid UPI ID — it looks like{" "}
-                                    <b className="font-semibold text-ink/80">name@bank</b>.
-                                  </>
-                                ) : upiFail ? (
-                                  <>
-                                    <b className="font-semibold text-ink/80">{upiFail}</b> didn't open — it may not
-                                    be installed on this device. Please choose another app below, or scan the QR
-                                    code with any UPI app.
-                                  </>
-                                ) : (
-                                  <>
-                                    No UPI app opened — none may be installed on this device. Please install any
-                                    UPI app to donate, or scan the QR code with another phone.
-                                  </>
-                                )}
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center justify-between gap-2 rounded-2xl border border-black/[0.08] bg-mist/60 px-4 py-3">
+                            <div className="min-w-0">
+                              <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-ink/40">
+                                UPI ID
                               </span>
+                              <span className="block truncate font-mono text-xs font-semibold text-ink">
+                                {qrConfig.upiId}
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => copyUpiId(qrConfig.upiId)}
+                              aria-label="Copy UPI ID to clipboard"
+                              className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-brand-800 shadow-sm transition-colors hover:bg-brand-50"
+                            >
+                              {copied ? (
+                                <>
+                                  <LuCheck className="h-3.5 w-3.5 text-brand-600" aria-hidden="true" />
+                                  Copied
+                                </>
+                              ) : (
+                                <>
+                                  <LuCopy className="h-3.5 w-3.5" aria-hidden="true" />
+                                  Copy
+                                </>
+                              )}
+                            </button>
+                          </div>
+
+                          <div className="my-1 flex items-center gap-3">
+                            <div className="h-px flex-1 bg-black/[0.06]" />
+                            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-ink/40">
+                              or pay directly in app
+                            </span>
+                            <div className="h-px flex-1 bg-black/[0.06]" />
+                          </div>
+
+                          {upiFail && (
+                            <p className="rounded-xl border border-amber-500/20 bg-amber-50 px-3.5 py-2.5 text-[12px] leading-relaxed text-amber-900">
+                              Could not open {upiFail}. You can still copy the UPI ID above or scan the QR code from inside your UPI app.
                             </p>
                           )}
+
                           <div className="grid grid-cols-2 gap-3">
                             {UPI_APPS.map(({ name, scheme, Icon, bg, fg, border }) => (
                               <a
@@ -419,7 +391,7 @@ export default function DonationModal() {
                         type="button"
                         onClick={() => {
                           setPendingMethod("UPI · QR code")
-                          setStep("receipt")
+                          setStep("done")
                         }}
                         className="mt-1 w-full rounded-full bg-brand-600 py-3.5 text-sm font-semibold text-white shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-700"
                       >
@@ -435,11 +407,6 @@ export default function DonationModal() {
                       </p>
                     </div>
                   )}
-
-                  <p className="flex items-start gap-2 rounded-xl bg-mist px-4 py-3 text-[12px] leading-relaxed text-ink/55">
-                    <LuInfo className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink/35" aria-hidden="true" />
-                    {donation.receiptNote}
-                  </p>
                 </div>
               )}
 
@@ -462,7 +429,7 @@ export default function DonationModal() {
                         type="button"
                         onClick={() => {
                           setPendingMethod("Pay Online · Razorpay")
-                          setStep("receipt")
+                          setStep("done")
                         }}
                         className="w-full rounded-full border border-black/10 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
                       >
@@ -477,102 +444,6 @@ export default function DonationModal() {
                         available here once the foundation connects its official gateway.
                       </p>
                     </div>
-                  )}
-
-                  <p className="flex items-start gap-2 rounded-xl bg-mist px-4 py-3 text-[12px] leading-relaxed text-ink/55">
-                    <LuInfo className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink/35" aria-hidden="true" />
-                    {donation.receiptNote}
-                  </p>
-                </div>
-              )}
-
-              {step === "receipt" && (
-                <div className="flex flex-col gap-5 py-2">
-                  {!receipt ? (
-                    <>
-                      <div className="text-center">
-                        <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-100 text-brand-700">
-                          <LuCheck className="h-7 w-7" aria-hidden="true" />
-                        </span>
-                        <h3 className="mt-4 font-display text-2xl font-medium tracking-tight text-ink">Welcome back</h3>
-                        <p className="mx-auto mt-2 max-w-[300px] text-sm leading-relaxed text-ink/55">
-                          {pendingMethod
-                            ? `If your ${pendingMethod} payment went through, enter the amount you paid to get your donation receipt.`
-                            : "If your payment went through, enter the amount you paid to get your donation receipt."}
-                        </p>
-                      </div>
-
-                      <label className="block">
-                        <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-ink/45">
-                          Amount donated (₹)
-                        </span>
-                        <input
-                          type="number"
-                          min="1"
-                          step="1"
-                          inputMode="numeric"
-                          value={amount}
-                          onChange={(e) => setAmount(e.target.value)}
-                          placeholder="e.g. 500"
-                          className="mt-1.5 w-full rounded-xl border border-black/10 px-4 py-3 text-sm font-medium text-ink outline-none transition-colors focus:border-brand-400"
-                        />
-                      </label>
-
-                      <button
-                        type="button"
-                        onClick={generateReceipt}
-                        disabled={!amount || Number(amount) <= 0}
-                        className="rounded-full bg-brand-700 py-3.5 text-sm font-semibold text-white shadow-card transition-all duration-300 hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-40"
-                      >
-                        Generate receipt
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <div className="rounded-2xl border border-black/[0.08] bg-white p-5 text-left shadow-card">
-                        <div className="flex items-center justify-between gap-3 border-b border-black/[0.06] pb-3">
-                          <span className="font-display text-lg font-medium text-ink">{donation.orgName}</span>
-                          <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-ink/40">
-                            Donation receipt
-                          </span>
-                        </div>
-                        <dl className="mt-3 space-y-2 text-sm">
-                          <div className="flex items-center justify-between gap-3">
-                            <dt className="text-ink/50">Receipt no.</dt>
-                            <dd className="font-medium text-ink">{receipt.no}</dd>
-                          </div>
-                          <div className="flex items-center justify-between gap-3">
-                            <dt className="text-ink/50">Date</dt>
-                            <dd className="font-medium text-ink">{receipt.date}</dd>
-                          </div>
-                          <div className="flex items-center justify-between gap-3">
-                            <dt className="text-ink/50">Method</dt>
-                            <dd className="font-medium text-ink">{receipt.method}</dd>
-                          </div>
-                          <div className="flex items-center justify-between gap-3 border-t border-black/[0.06] pt-2.5">
-                            <dt className="font-semibold text-ink">Amount received</dt>
-                            <dd className="font-display text-lg font-semibold text-brand-800">
-                              ₹{receipt.amount.toLocaleString("en-IN")}
-                            </dd>
-                          </div>
-                        </dl>
-                        <p className="mt-3 text-[12px] leading-relaxed text-ink/50">
-                          Received with thanks — your contribution helps the foundation reach more families across
-                          Srinagar &amp; Kashmir.
-                        </p>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setPendingMethod(null)
-                          setStep("done")
-                        }}
-                        className="rounded-full bg-brand-700 py-3.5 text-sm font-semibold text-white shadow-card transition-all duration-300 hover:bg-brand-800"
-                      >
-                        Continue
-                      </button>
-                    </>
                   )}
                 </div>
               )}
@@ -599,7 +470,7 @@ export default function DonationModal() {
                     rel="noopener noreferrer"
                     className="mt-6 inline-flex items-center gap-2 rounded-full border border-black/10 px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
                   >
-                    Share your receipt on Instagram
+                    Follow us on Instagram
                     <LuArrowUpRight className="h-4 w-4" aria-hidden="true" />
                   </a>
                   <button
@@ -611,9 +482,6 @@ export default function DonationModal() {
                   </button>
                 </div>
               )}
-
-
-
             </div>
 
             {/* footer */}
@@ -629,4 +497,3 @@ export default function DonationModal() {
     </AnimatePresence>
   )
 }
-

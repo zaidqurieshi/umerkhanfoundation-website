@@ -8,24 +8,30 @@ import { ticker } from "../data/content"
 function TickerRow({ ariaHidden = false }) {
   return (
     <div className="flex shrink-0 items-center" aria-hidden={ariaHidden || undefined}>
-      {ticker.items.map((item, i) => (
-        <span key={i} className="flex items-center gap-2.5 whitespace-nowrap px-5 text-[11px] sm:text-xs">
-          <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-brand-300" aria-hidden="true" />
-          <span className="font-semibold uppercase tracking-[0.18em] text-brand-300">{item.label}</span>
-          <span className="text-white/85">{item.text}</span>
-          <span className="ml-3 text-white/20" aria-hidden="true">
-            |
+      {ticker.items.map((item, i) => {
+        const text = typeof item === "string" ? item : item.text || item.label
+        const label = typeof item === "string" ? null : (item.text ? item.label : null)
+        return (
+          <span key={i} className="flex items-center gap-2.5 whitespace-nowrap px-5 text-[11px] sm:text-xs">
+            <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-brand-300" aria-hidden="true" />
+            {label && <span className="font-semibold uppercase tracking-[0.18em] text-brand-300">{label}</span>}
+            <span className="font-medium text-white/90">{text}</span>
+            <span className="ml-3 text-white/20" aria-hidden="true">
+              |
+            </span>
           </span>
-        </span>
-      ))}
-      <a
-        href={ticker.cta.href}
-        tabIndex={ariaHidden ? -1 : undefined}
-        className="flex items-center gap-1.5 whitespace-nowrap px-5 text-xs font-semibold text-white transition-colors hover:text-brand-200"
-      >
-        {ticker.cta.label}
-        <LuArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-      </a>
+        )
+      })}
+      {ticker.cta && (
+        <a
+          href={ticker.cta.href}
+          tabIndex={ariaHidden ? -1 : undefined}
+          className="flex items-center gap-1.5 whitespace-nowrap px-5 text-xs font-semibold text-white transition-colors hover:text-brand-200"
+        >
+          {ticker.cta.label}
+          <LuArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+        </a>
+      )}
     </div>
   )
 }
