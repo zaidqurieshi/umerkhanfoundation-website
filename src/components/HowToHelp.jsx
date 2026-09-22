@@ -44,6 +44,7 @@ export default function HowToHelp() {
           title={helpOptions.title}
           description={helpOptions.description}
           align="center"
+          className="sm:mx-auto"
         />
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
