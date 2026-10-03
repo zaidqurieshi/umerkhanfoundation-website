@@ -13,7 +13,7 @@ import {
   LuSmartphone,
   LuX,
 } from "react-icons/lu"
-import { SiGooglepay, SiPaytm, SiPhonepe } from "react-icons/si"
+import { SiGooglepay, SiPaytm, SiPhonepe, SiWhatsapp } from "react-icons/si"
 import { LogoMark } from "./ui/Logo"
 import { donation, org } from "../data/content"
 import { useDonation } from "../context/DonationContext"
@@ -465,10 +465,21 @@ export default function DonationModal() {
                     Your contribution helps the foundation reach more families across Srinagar &amp; Kashmir.
                   </p>
                   <a
+                    href={`https://wa.me/919596581009?text=${encodeURIComponent(
+                      "Hey Umer Khan Foundation. I have completed the payment and would like to ask for a receipt."
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] py-3.5 text-sm font-semibold text-white shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#20ba5a] hover:shadow-lift"
+                  >
+                    <SiWhatsapp className="h-4 w-4" aria-hidden="true" />
+                    Ask for a Receipt
+                  </a>
+                  <a
                     href={org.social.instagram.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-6 inline-flex items-center gap-2 rounded-full border border-black/10 px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
+                    className="mt-3 inline-flex items-center gap-2 rounded-full border border-black/10 px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-brand-300 hover:text-brand-700"
                   >
                     Follow us on Instagram
                     <LuArrowUpRight className="h-4 w-4" aria-hidden="true" />
