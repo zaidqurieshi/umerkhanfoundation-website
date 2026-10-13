@@ -7,6 +7,7 @@ import About from "./components/About"
 import Initiatives from "./components/Initiatives"
 import HowToHelp from "./components/HowToHelp"
 import DonationCTA from "./components/DonationCTA"
+import BankDetails from "./components/BankDetails"
 import Contact from "./components/Contact"
 import Footer from "./components/Footer"
 import MobileDonateCTA from "./components/MobileDonateCTA"
@@ -39,6 +40,7 @@ export default function App() {
         <Initiatives />
         <HowToHelp />
         <DonationCTA />
+        <BankDetails />
         <Contact />
       </main>
 

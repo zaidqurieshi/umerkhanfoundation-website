@@ -59,6 +59,7 @@ export const navLinks = [
   { label: "About", href: "#about" },
   { label: "Our Work", href: "#work" },
   { label: "Impact", href: "#impact" },
+  { label: "Bank Details", href: "#bank-details" },
   { label: "Contact", href: "#contact" },
 ]
 
@@ -287,6 +288,38 @@ export const donation = {
   },
   receiptNote:
     "After donating, you can share your payment receipt with the foundation via Instagram or Facebook for confirmation.",
+}
+
+/* ── 13b · Bank Details — official accounts ────────────────────── */
+
+export const bankDetails = {
+  eyebrow: "Direct Bank Transfer",
+  title: "Bank Details",
+  description:
+    "You can donate directly to our official foundation bank accounts via NEFT, RTGS, IMPS, or J&K Bank mPay.",
+  note: "All contributions directly support healthcare, medical oxygen, orphan care, and community welfare initiatives in Kashmir.",
+  accounts: [
+    {
+      type: "Zakaat Account",
+      badge: "Zakaat Eligible",
+      bankName: "J&K Bank",
+      logo: "/jk-bank-logo.png",
+      accountName: "Umer Khan Foundation",
+      accountNumber: "0067010100004235",
+      ifscCode: "JAKA0STREET",
+      branch: "Residency Road, Srinagar",
+    },
+    {
+      type: "Donation Account",
+      badge: "General Donations & Sadaqah",
+      bankName: "J&K Bank",
+      logo: "/jk-bank-logo.png",
+      accountName: "Umer Khan Foundation",
+      accountNumber: "0346010100006153",
+      ifscCode: "JAKA0BOTSHA",
+      branch: "Botshah Mohalla, Srinagar",
+    },
+  ],
 }
 
 /* ── 14 · Contact — verified details only ─────────────────────── */
