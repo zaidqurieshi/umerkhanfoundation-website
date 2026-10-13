@@ -1,0 +1,45 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/dashboard/assets/:path*",
+      "destination": "https://ukf.pages.dev/assets/:path*"
+    },
+    {
+      "source": "/dashboard/ukf-logo.png",
+      "destination": "https://ukf.pages.dev/ukf-logo.png"
+    },
+    {
+      "source": "/dashboard/ukf-icon-192.png",
+      "destination": "https://ukf.pages.dev/ukf-icon-192.png"
+    },
+    {
+      "source": "/dashboard/ukf-icon-512.png",
+      "destination": "https://ukf.pages.dev/ukf-icon-512.png"
+    },
+    {
+      "source": "/dashboard/favicon.svg",
+      "destination": "https://ukf.pages.dev/favicon.svg"
+    },
+    {
+      "source": "/dashboard/icons.svg",
+      "destination": "https://ukf.pages.dev/icons.svg"
+    },
+    {
+      "source": "/dashboard/manifest.webmanifest",
+      "destination": "https://ukf.pages.dev/manifest.webmanifest"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "https://ukf.pages.dev"
+    },
+    {
+      "source": "/dashboard/",
+      "destination": "https://ukf.pages.dev"
+    },
+    {
+      "source": "/dashboard/:path*",
+      "destination": "https://ukf.pages.dev"
+    }
+  ]
+}
