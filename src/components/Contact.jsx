@@ -24,7 +24,7 @@ export default function Contact() {
     },
     {
       icon: LuInstagram,
-      label: "Message us",
+      label: "Follow us",
       value: org.social.instagram.handle,
       action: { label: "Open Instagram", href: org.social.instagram.url },
     },
@@ -99,7 +99,7 @@ export default function Contact() {
                         <LuMail className="h-6 w-6" aria-hidden="true" />
                       </span>
                       <span className="min-w-0">
-                        <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-ink/45">Email</span>
+                        <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-ink/45">Write to us</span>
                         <span className="mt-1 block truncate text-[15px] font-medium text-ink">{org.email}</span>
                       </span>
                     </a>

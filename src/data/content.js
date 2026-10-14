@@ -43,7 +43,7 @@ export const org = {
     landmark: "Near Masjid Gausia",
   },
   phone: "+91 9596581009",
-  email: null, // ← add verified email, e.g. "contact@…"
+  email: "info@umerkhanfoundation.com",
   social: {
     instagram: { url: IG_URL, handle: "@umerkhanfoundation" },
     facebook: { url: FB_URL, handle: "Umer Khan Foundation" },
@@ -338,7 +338,7 @@ export const contact = {
 export const footer = {
   missionLine:
     "Working for the social development of underprivileged individuals, groups and communities in Srinagar, Jammu & Kashmir.",
-  copyright: `© ${new Date().getFullYear()} Umer Khan Foundation. All rights reserved.`,
+  copyright: "2026 Umer Khan Foundation. All rights reserved.",
   locationLine: "Srinagar, Jammu & Kashmir, India",
   workLinksTitle: "Our Work",
   exploreLinksTitle: "Explore",

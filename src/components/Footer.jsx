@@ -113,7 +113,20 @@ export default function Footer() {
 
         {/* bottom bar */}
         <div className="mt-14 flex flex-col gap-3 border-t border-white/10 py-7 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
-          <p>{footer.copyright}</p>
+          <div>
+            <p>{footer.copyright}</p>
+            <p className="mt-1">
+              Designed by{" "}
+              <a
+                href="https://scrapxmedia.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-white"
+              >
+                ScrapX Media
+              </a>
+            </p>
+          </div>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             {footer.legal.map((item) => (
               <a key={item.label} href={item.href} className="transition-colors hover:text-white">
