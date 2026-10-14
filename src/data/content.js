@@ -307,7 +307,7 @@ export const bankDetails = {
       accountName: "Umer Khan Foundation",
       accountNumber: "0067010100004235",
       ifscCode: "JAKA0STREET",
-      branch: "Residency Road, Srinagar",
+      branch: "Hari Singh High Street",
     },
     {
       type: "Donation Account",
