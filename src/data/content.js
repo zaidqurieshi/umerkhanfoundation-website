@@ -68,13 +68,12 @@ export const navLinks = [
 export const ticker = {
   items: [
     { text: "Medical Assistance" },
-    { text: "Montly Food Assistance" },
+    { text: "Monthly Food Assistance" },
     { text: "Oxygen Support" },
     { text: "Orphan Care" },
     { text: "Educational Assistance" },
     { text: "Cash Assistance" },
     { text: "One Time Medical Assistance" },
-    { text: "Montly Food Assistance" },
   ],
   cta: null,
 }
