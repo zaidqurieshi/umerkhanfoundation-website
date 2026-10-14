@@ -36,7 +36,7 @@ export default function HowToHelp() {
   }
 
   return (
-    <section id="help" className="scroll-mt-24 bg-mist py-24 sm:py-32" aria-labelledby="help-title">
+    <section id="help" className="scroll-mt-24 bg-mist pt-6 pb-10 sm:pt-8 sm:pb-14 lg:pt-10 lg:pb-16" aria-labelledby="help-title">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           id="help-title"
@@ -47,7 +47,7 @@ export default function HowToHelp() {
           className="sm:mx-auto"
         />
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 sm:mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {helpOptions.items.map((option, i) => {
             const Icon = icons[option.icon] ?? LuHeart
             const isPrimary = option.primary

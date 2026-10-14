@@ -45,8 +45,8 @@ function Counter({ value, suffix = "", format }) {
  */
 export default function ImpactStats() {
   return (
-    <section id="impact" className="scroll-mt-24 px-4 py-10 sm:px-6 sm:py-14 lg:px-8" aria-labelledby="impact-title">
-      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-900 via-brand-950 to-brand-950 px-6 py-16 text-white shadow-lift sm:px-12 sm:py-20 lg:px-16">
+    <section id="impact" className="scroll-mt-24 px-4 py-6 sm:px-6 sm:py-10 lg:px-8" aria-labelledby="impact-title">
+      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-gradient-to-br from-brand-900 via-brand-950 to-brand-950 px-5 py-10 sm:px-12 sm:py-14 lg:px-16 lg:py-16 text-white shadow-lift">
         {/* decorative glows & rings */}
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <div className="absolute -right-24 -top-32 h-96 w-96 rounded-full bg-brand-500/20 blur-3xl" />
@@ -58,7 +58,7 @@ export default function ImpactStats() {
         <div className="relative">
           <SectionHeading eyebrow={impact.eyebrow} title={impact.title} dark id="impact-title" />
 
-          <div className="mt-14 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 sm:mt-12 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
             {impact.stats.map((stat, i) => (
               <Reveal key={stat.label} delay={i * 0.08}>
                 <div className={i > 0 ? "lg:border-l lg:border-white/10 lg:pl-8" : ""}>

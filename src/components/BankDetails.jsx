@@ -56,7 +56,7 @@ export default function BankDetails() {
   return (
     <section
       id="bank-details"
-      className="scroll-mt-24 py-24 sm:py-32 bg-mist"
+      className="scroll-mt-24 py-10 sm:py-14 lg:py-16 bg-mist"
       aria-labelledby="bank-details-title"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -69,21 +69,21 @@ export default function BankDetails() {
           className="sm:mx-auto"
         />
 
-        <div className="mt-14 grid gap-8 md:grid-cols-2 max-w-5xl mx-auto">
+        <div className="mt-8 sm:mt-12 grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
           {bankDetails.accounts.map((account, i) => (
             <Reveal key={account.type} delay={i * 0.1} className="h-full">
               <div className="h-full flex flex-col rounded-3xl border border-black/[0.08] bg-white shadow-card hover:shadow-soft transition-all duration-500 overflow-hidden group">
                 {/* Top header — light background with centered bank logo */}
-                <div className="bg-[#f2f4f6] border-b border-black/[0.06] py-7 px-8 flex items-center justify-center min-h-[120px]">
+                <div className="bg-[#f2f4f6] border-b border-black/[0.06] py-5 px-6 sm:py-6 sm:px-8 flex items-center justify-center min-h-[90px] sm:min-h-[110px]">
                   <img
                     src={account.logo}
                     alt={account.bankName}
-                    className="h-12 sm:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                    className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
 
                 {/* Bottom content — details */}
-                <div className="p-7 sm:p-8 flex-1 flex flex-col justify-between">
+                <div className="p-5 sm:p-7 flex-1 flex flex-col justify-between">
                   <div>
                     {/* Header: Account type + Badge */}
                     <div className="flex items-center justify-between gap-3 mb-5">

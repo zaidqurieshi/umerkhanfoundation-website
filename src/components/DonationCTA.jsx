@@ -25,9 +25,9 @@ export default function DonationCTA() {
   }
 
   return (
-    <section id="donate" className="scroll-mt-24 px-4 py-24 sm:px-6 sm:py-28 lg:px-8" aria-labelledby="donate-title">
+    <section id="donate" className="scroll-mt-24 px-4 py-8 sm:px-6 sm:py-12 lg:px-8" aria-labelledby="donate-title">
       <Reveal>
-        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 px-6 py-20 text-center text-white shadow-lift sm:px-12 sm:py-24 lg:px-20">
+        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 px-5 py-10 sm:px-12 sm:py-14 lg:px-20 lg:py-16 text-center text-white shadow-lift">
           {/* decorative glows & rings */}
           <div className="pointer-events-none absolute inset-0" aria-hidden="true">
             <div className="absolute -left-32 -top-40 h-[420px] w-[420px] rounded-full bg-brand-500/25 blur-3xl" />
@@ -45,16 +45,16 @@ export default function DonationCTA() {
 
             <h2
               id="donate-title"
-              className="mt-7 font-display text-4xl font-medium leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl"
+              className="mt-5 sm:mt-6 font-display text-3xl font-medium leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl"
             >
               {donationCta.title}
             </h2>
 
-            <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg">
+            <p className="mt-4 sm:mt-5 max-w-2xl text-sm leading-relaxed text-white/70 sm:text-base lg:text-lg">
               {donationCta.description}
             </p>
 
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3.5 sm:gap-4">
               <button
                 type="button"
                 onClick={openDonation}

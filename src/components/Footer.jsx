@@ -9,7 +9,7 @@ import { DonateButton } from "./Navbar"
  */
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-brand-950 pt-16 text-white sm:pt-20">
+    <footer className="relative overflow-hidden bg-brand-950 pt-10 text-white sm:pt-14">
       {/* subtle glow */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute -top-40 left-1/2 h-96 w-[720px] -translate-x-1/2 rounded-full bg-brand-500/10 blur-3xl" />

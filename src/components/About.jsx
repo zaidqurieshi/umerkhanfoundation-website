@@ -10,11 +10,11 @@ import { about } from "../data/content"
  */
 export default function About() {
   return (
-    <section id="about" className="scroll-mt-24 py-24 sm:py-32" aria-labelledby="about-title">
+    <section id="about" className="scroll-mt-24 py-10 sm:py-14 lg:py-16" aria-labelledby="about-title">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading eyebrow={about.eyebrow} title={about.title} id="about-title" />
 
-        <div className="mt-12 grid items-start gap-10 lg:mt-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+        <div className="mt-8 sm:mt-12 grid items-start gap-8 sm:gap-10 lg:mt-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <Reveal>
             <figure className="border-l-2 border-brand-500 pl-6">
               <blockquote className="font-display text-xl font-normal leading-relaxed text-ink/90 sm:text-2xl">

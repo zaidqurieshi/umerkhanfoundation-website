@@ -109,7 +109,7 @@ export default function Hero() {
         <div className="absolute left-[-14%] top-64 h-[460px] w-[460px] rounded-full bg-brand-50 blur-3xl" />
       </div>
 
-      <div className="mx-auto max-w-4xl px-5 pb-20 pt-12 text-center sm:px-8 sm:pt-16 lg:pb-28 lg:pt-20">
+      <div className="mx-auto max-w-4xl px-5 pb-10 pt-8 text-center sm:px-8 sm:pt-14 sm:pb-14 lg:pb-16 lg:pt-16">
         <motion.div
           variants={container}
           initial={reduce ? undefined : "hidden"}

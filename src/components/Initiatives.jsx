@@ -11,11 +11,11 @@ export default function Initiatives() {
   return (
     <section
       id="work"
-      className="scroll-mt-24 bg-mist py-24 sm:py-32"
+      className="scroll-mt-24 bg-mist py-10 sm:py-14 lg:py-16"
       aria-labelledby="work-title"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
             id="work-title"
             eyebrow={initiatives.eyebrow}
@@ -24,7 +24,7 @@ export default function Initiatives() {
           />
         </div>
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+        <div className="mt-8 sm:mt-12 grid gap-5 sm:gap-6 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3">
           {initiatives.items.map((item, i) => (
             <Reveal key={item.title} delay={(i % 3) * 0.08} className="h-full">
               <a

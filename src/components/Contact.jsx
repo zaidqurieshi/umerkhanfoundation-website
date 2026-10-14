@@ -37,8 +37,8 @@ export default function Contact() {
   ]
 
   return (
-    <section id="contact" className="scroll-mt-24 py-24 sm:py-32" aria-labelledby="contact-title">
-      <div className="mx-auto grid max-w-7xl gap-14 px-5 sm:px-8 lg:grid-cols-2 lg:gap-16">
+    <section id="contact" className="scroll-mt-24 py-10 sm:py-14 lg:py-16" aria-labelledby="contact-title">
+      <div className="mx-auto grid max-w-7xl gap-8 sm:gap-12 px-5 sm:px-8 lg:grid-cols-2 lg:gap-16">
         {/* left — info & actions */}
         <div>
           <SectionHeading
@@ -48,7 +48,7 @@ export default function Contact() {
             description={contact.description}
           />
 
-          <div className="mt-10 flex flex-col gap-4">
+          <div className="mt-8 sm:mt-10 flex flex-col gap-3.5 sm:gap-4">
             {cards.map((card, i) => (
               <Reveal key={card.label} delay={i * 0.06}>
                 <div className="group flex items-center gap-4 rounded-3xl border border-black/[0.06] bg-white p-5 shadow-card transition-all duration-500 hover:-translate-y-0.5 hover:shadow-soft">
