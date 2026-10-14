@@ -133,8 +133,55 @@ body {
 
   #help .grid > *,
   #help .grid > * > div,
-  #donate .mx-auto {
+  #donate .mx-auto,
+  #contact > div,
+  #contact > div > *,
+  #contact .max-w-2xl,
+  #contact .max-w-2xl > *,
+  #bank-details .max-w-7xl,
+  #bank-details .max-w-5xl,
+  #bank-details .max-w-5xl > * {
+    box-sizing: border-box;
     min-width: 0;
     max-width: 100%;
+  }
+
+  /* Flex headings can otherwise size to their longest unbroken title and
+     force their parent grid wider than the phone. */
+  #contact .max-w-2xl,
+  #bank-details .max-w-2xl {
+    width: 100%;
+  }
+
+  /* Keep contact actions inside their cards on compact phone widths. */
+  #contact .group.flex.items-center {
+    flex-wrap: wrap;
+  }
+
+  #contact .group.flex.items-center > a {
+    margin-left: 4rem;
+  }
+
+  #contact .group.flex.items-center > div {
+    overflow-wrap: anywhere;
+  }
+
+  /* Let narrow account cards wrap their badge and long account values. */
+  #bank-details .max-w-5xl .flex.items-center.justify-between {
+    min-width: 0;
+  }
+
+  #bank-details .max-w-5xl h3 {
+    overflow-wrap: anywhere;
+  }
+
+  #bank-details .max-w-5xl .rounded-full {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  #bank-details .max-w-5xl .rounded-2xl.p-4 > div > :last-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 }
