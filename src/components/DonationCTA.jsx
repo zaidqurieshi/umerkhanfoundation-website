@@ -27,7 +27,7 @@ export default function DonationCTA() {
   return (
     <section id="donate" className="scroll-mt-24 px-4 py-8 sm:px-6 sm:py-12 lg:px-8" aria-labelledby="donate-title">
       <Reveal>
-        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 px-5 py-10 sm:px-12 sm:py-14 lg:px-20 lg:py-16 text-center text-white shadow-lift">
+        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950 px-4 py-8 sm:px-12 sm:py-14 lg:px-20 lg:py-16 text-center text-white shadow-lift">
           {/* decorative glows & rings */}
           <div className="pointer-events-none absolute inset-0" aria-hidden="true">
             <div className="absolute -left-32 -top-40 h-[420px] w-[420px] rounded-full bg-brand-500/25 blur-3xl" />
@@ -37,20 +37,20 @@ export default function DonationCTA() {
             <div className="absolute left-1/2 top-0 h-px w-2/3 -translate-x-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           </div>
 
-          <div className="relative mx-auto flex max-w-3xl flex-col items-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-brand-100 backdrop-blur">
+          <div className="relative mx-auto flex min-w-0 w-full max-w-3xl flex-col items-center">
+            <span className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[9px] font-bold uppercase leading-tight tracking-[0.12em] sm:px-4 sm:text-[11px] sm:tracking-[0.22em] text-brand-100 backdrop-blur">
               <LuHeart className="h-3.5 w-3.5" aria-hidden="true" />
               {donationCta.eyebrow}
             </span>
 
             <h2
               id="donate-title"
-              className="mt-5 sm:mt-6 font-display text-3xl font-medium leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl"
+              className="mt-5 sm:mt-6 max-w-full break-words font-display text-2xl font-medium leading-[1.1] tracking-tight sm:text-5xl sm:break-normal lg:text-6xl"
             >
               {donationCta.title}
             </h2>
 
-            <p className="mt-4 sm:mt-5 max-w-2xl text-sm leading-relaxed text-white/70 sm:text-base lg:text-lg">
+            <p className="mt-4 sm:mt-5 max-w-full text-sm leading-relaxed text-white/70 [overflow-wrap:anywhere] sm:max-w-2xl sm:text-base lg:text-lg">
               {donationCta.description}
             </p>
 
@@ -58,7 +58,7 @@ export default function DonationCTA() {
               <button
                 type="button"
                 onClick={openDonation}
-                className="group inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-4 text-sm font-semibold text-brand-900 shadow-lift transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-50 sm:text-base"
+                className="group inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-3 text-sm sm:px-8 sm:py-4 text-sm font-semibold text-brand-900 shadow-lift transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-50 sm:text-base"
               >
                 <LuHeart className="h-[18px] w-[18px] text-brand-600 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
                 {donationCta.primaryCta.label}
@@ -66,7 +66,7 @@ export default function DonationCTA() {
               <a
                 href={`tel:${org.phone.replace(/\s/g, "")}`}
                 onClick={callNow}
-                className="group inline-flex items-center gap-2.5 rounded-full border border-white/25 px-8 py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/10 sm:text-base"
+                className="group inline-flex items-center gap-2.5 rounded-full border border-white/25 px-5 py-3 text-sm sm:px-8 sm:py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/10 sm:text-base"
               >
                 {copied ? (
                   <LuCheck className="h-4 w-4 text-brand-200" aria-hidden="true" />
@@ -80,7 +80,7 @@ export default function DonationCTA() {
               </a>
               <a
                 href={donationCta.secondaryCta.href}
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-8 py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/10 sm:text-base"
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-3 text-sm sm:px-8 sm:py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/10 sm:text-base"
               >
                 {donationCta.secondaryCta.label}
                 <LuArrowUpRight className="h-4 w-4" aria-hidden="true" />

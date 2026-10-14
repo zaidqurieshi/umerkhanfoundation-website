@@ -113,3 +113,28 @@ body {
     animation: none !important;
   }
 }
+
+/* Keep narrow screens from inheriting a wider content track. */
+@media (max-width: 639px) {
+  html,
+  body,
+  #root,
+  main,
+  main > section {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  html,
+  body,
+  #root {
+    overflow-x: clip;
+  }
+
+  #help .grid > *,
+  #help .grid > * > div,
+  #donate .mx-auto {
+    min-width: 0;
+    max-width: 100%;
+  }
+}

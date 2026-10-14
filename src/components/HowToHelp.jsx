@@ -37,7 +37,7 @@ export default function HowToHelp() {
 
   return (
     <section id="help" className="scroll-mt-24 bg-mist pt-6 pb-10 sm:pt-8 sm:pb-14 lg:pt-10 lg:pb-16" aria-labelledby="help-title">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <div className="mx-auto min-w-0 max-w-7xl px-5 sm:px-8">
         <SectionHeading
           id="help-title"
           eyebrow={helpOptions.eyebrow}
@@ -47,7 +47,7 @@ export default function HowToHelp() {
           className="sm:mx-auto"
         />
 
-        <div className="mt-8 sm:mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 sm:mt-12 grid min-w-0 grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {helpOptions.items.map((option, i) => {
             const Icon = icons[option.icon] ?? LuHeart
             const isPrimary = option.primary
@@ -55,7 +55,7 @@ export default function HowToHelp() {
             return (
               <Reveal key={option.title} delay={i * 0.08} className="h-full">
                 <div
-                  className={`flex h-full flex-col rounded-3xl p-7 transition-all duration-500 hover:-translate-y-1.5 ${
+                  className={`flex h-full min-w-0 w-full flex-col rounded-3xl p-5 sm:p-7 transition-all duration-500 hover:-translate-y-1.5 ${
                     isPrimary
                       ? "bg-gradient-to-br from-brand-600 to-brand-800 text-white shadow-lift"
                       : "bg-white text-ink shadow-card ring-1 ring-black/[0.06] hover:shadow-soft"
@@ -69,8 +69,8 @@ export default function HowToHelp() {
                     <Icon className="h-6 w-6" aria-hidden="true" />
                   </span>
 
-                  <h3 className="mt-5 font-display text-2xl font-medium tracking-tight">{option.title}</h3>
-                  <p className={`mt-2 flex-1 text-sm leading-relaxed ${isPrimary ? "text-white/75" : "text-ink/60"}`}>
+                  <h3 className="mt-5 font-display text-xl font-medium tracking-tight sm:text-2xl">{option.title}</h3>
+                  <p className={`mt-2 min-w-0 flex-1 text-sm leading-relaxed [overflow-wrap:anywhere] ${isPrimary ? "text-white/75" : "text-ink/60"}`}>
                     {option.description}
                   </p>
 
