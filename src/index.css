@@ -172,7 +172,10 @@ body {
   }
 
   #bank-details .max-w-5xl h3 {
-    overflow-wrap: anywhere;
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    height: auto !important;
   }
 
   #bank-details .max-w-5xl .rounded-full {

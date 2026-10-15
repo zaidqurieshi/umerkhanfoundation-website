@@ -71,8 +71,13 @@ export async function shareElementViaWhatsApp({
 }) {
   if (!element) return { success: false, error: "No element provided" }
 
+  const pixelRatio =
+    typeof window !== "undefined"
+      ? Math.max(window.devicePixelRatio || 1, 2)
+      : 2
+
   const captureOptions = {
-    pixelRatio: 2,
+    pixelRatio,
     backgroundColor: "#ffffff",
     skipFonts: true,
     cacheBust: false,

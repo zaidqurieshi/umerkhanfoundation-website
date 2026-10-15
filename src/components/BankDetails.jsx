@@ -118,11 +118,11 @@ function AccountCard({ account }) {
           <div>
             {/* Header: Account type + Badge */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between items-start gap-3 sm:gap-4 mb-5">
-              <div className="min-w-0">
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight leading-snug">
+              <div className="min-w-0 flex flex-col">
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight leading-snug whitespace-nowrap block">
                   {account.type}
                 </h3>
-                <p className="text-xs sm:text-sm font-semibold text-brand-700 mt-1.5 leading-normal">
+                <p className="text-xs sm:text-sm font-semibold text-brand-700 mt-1 leading-normal whitespace-nowrap block">
                   {account.bankName}
                 </p>
               </div>
