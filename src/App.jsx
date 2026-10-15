@@ -2,6 +2,7 @@ import { DonationProvider } from "./context/DonationContext"
 import NewsTicker from "./components/NewsTicker"
 import Navbar, { ScrollProgress } from "./components/Navbar"
 import Hero from "./components/Hero"
+import CampaignBanner from "./components/CampaignBanner"
 import ImpactStats from "./components/ImpactStats"
 import About from "./components/About"
 import Initiatives from "./components/Initiatives"
@@ -15,7 +16,7 @@ import DonationModal from "./components/DonationModal"
 
 /**
  * Umer Khan Foundation — one-page site.
- * Order: ticker → nav → hero → impact → about → work →
+ * Order: ticker → nav → hero → campaign → impact → about → work →
  * help → donate CTA → contact → footer.
  */
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
 
       <main>
         <Hero />
+        <CampaignBanner />
         <ImpactStats />
         <About />
         <Initiatives />

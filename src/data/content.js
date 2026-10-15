@@ -104,6 +104,32 @@ export const hero = {
   chip: { text: "Featured campaign · Winter Kit Kashmir" },
 }
 
+/* ── 3b · Featured Campaign — Oxygen Concentrator ─────────────── */
+
+export const oxygenCampaign = {
+  id: "campaign",
+  eyebrow: "Featured Campaign · Respiratory Care",
+  category: "Healthcare Initiative",
+  title: "Help Us Bring the Gift of Breath",
+  subtitle: "Oxygen Concentrator Fundraiser",
+  targetAmount: 65000,
+  targetDisplay: "₹65,000",
+  description:
+    "We are raising ₹65,000 to purchase an Oxygen Concentrator to support patients who require supplemental oxygen and improve access to essential respiratory care.",
+  winterNote:
+    "As part of this initiative, we aim to equip ourselves with essential medical equipment to support our elders in getting through the harsh winter months with greater care, comfort, and dignity.",
+  paymentUrl: "https://pages.razorpay.com/kashmiroxygen",
+  bannerImage: "/oxygen-concentrator-banner.png",
+  bannerAlt:
+    "Help Us Bring the Gift of Breath — Oxygen Concentrator fundraising campaign with a target of ₹65,000",
+  features: [
+    "Supports Patients in Need",
+    "Helps Our Elders This Winter",
+    "Essential Medical Equipment",
+    "Every Contribution Makes a Difference",
+  ],
+}
+
 /* ── 4 · Impact / numbers — VERIFIED-ONLY figures ──────────────── */
 
 export const impact = {
