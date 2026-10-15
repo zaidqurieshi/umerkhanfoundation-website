@@ -86,16 +86,16 @@ export default function BankDetails() {
                 <div className="p-5 sm:p-7 flex-1 flex flex-col justify-between">
                   <div>
                     {/* Header: Account type + Badge */}
-                    <div className="flex items-center justify-between gap-3 mb-5">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between items-start gap-2.5 sm:gap-3 mb-5">
                       <div>
-                        <h3 className="font-display text-2xl font-bold text-ink tracking-tight">
+                        <h3 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight">
                           {account.type}
                         </h3>
                         <p className="text-xs sm:text-sm font-semibold text-brand-700 mt-0.5">
                           {account.bankName}
                         </p>
                       </div>
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-brand-50 text-brand-800 border border-brand-200/60 shrink-0">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-brand-50 text-brand-800 border border-brand-200/60 shrink-0 self-start sm:self-auto">
                         <LuShieldCheck className="w-3.5 h-3.5 text-brand-600" aria-hidden="true" />
                         {account.badge}
                       </span>

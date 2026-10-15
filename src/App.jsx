@@ -10,7 +10,6 @@ import DonationCTA from "./components/DonationCTA"
 import BankDetails from "./components/BankDetails"
 import Contact from "./components/Contact"
 import Footer from "./components/Footer"
-import MobileDonateCTA from "./components/MobileDonateCTA"
 import WhatsAppChat from "./components/WhatsAppChat"
 import DonationModal from "./components/DonationModal"
 
@@ -45,7 +44,6 @@ export default function App() {
       </main>
 
       <Footer />
-      <MobileDonateCTA />
       <WhatsAppChat />
       <DonationModal />
     </DonationProvider>
