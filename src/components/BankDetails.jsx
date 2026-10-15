@@ -108,6 +108,7 @@ function AccountCard({ account }) {
           <img
             src={account.logo}
             alt={account.bankName}
+            crossOrigin="anonymous"
             className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
           />
         </div>
@@ -116,40 +117,40 @@ function AccountCard({ account }) {
         <div className="p-5 sm:p-7 flex-1 flex flex-col justify-between">
           <div>
             {/* Header: Account type + Badge */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between items-start gap-2.5 sm:gap-3 mb-5">
-              <div>
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between items-start gap-3 sm:gap-4 mb-5">
+              <div className="min-w-0">
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight leading-snug">
                   {account.type}
                 </h3>
-                <p className="text-xs sm:text-sm font-semibold text-brand-700 mt-0.5">
+                <p className="text-xs sm:text-sm font-semibold text-brand-700 mt-1.5 leading-normal">
                   {account.bankName}
                 </p>
               </div>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-brand-50 text-brand-800 border border-brand-200/60 shrink-0 self-start sm:self-auto">
-                <LuShieldCheck className="w-3.5 h-3.5 text-brand-600" aria-hidden="true" />
-                {account.badge}
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-brand-50 text-brand-800 border border-brand-200/60 shrink-0 self-start sm:self-auto">
+                <LuShieldCheck className="w-3.5 h-3.5 text-brand-600 shrink-0" aria-hidden="true" />
+                <span className="whitespace-nowrap">{account.badge}</span>
               </span>
             </div>
 
             {/* Account fields */}
             <div className="space-y-1 bg-black/[0.02] rounded-2xl p-4 border border-black/[0.04]">
-              <div className="flex items-center justify-between py-2 border-b border-black/[0.06] gap-3">
+              <div className="flex items-center justify-between py-2.5 border-b border-black/[0.06] gap-3">
                 <span className="text-xs sm:text-sm font-medium text-ink/55 shrink-0">Bank:</span>
-                <span className="text-xs sm:text-sm font-semibold text-ink text-right">
+                <span className="text-xs sm:text-sm font-semibold text-ink text-right shrink-0 leading-normal">
                   {account.bankName}
                 </span>
               </div>
 
-              <div className="flex items-center justify-between py-2 border-b border-black/[0.06] gap-3">
+              <div className="flex items-center justify-between py-2.5 border-b border-black/[0.06] gap-3">
                 <span className="text-xs sm:text-sm font-medium text-ink/55 shrink-0">Branch:</span>
-                <span className="text-xs sm:text-sm font-semibold text-ink text-right">
+                <span className="text-xs sm:text-sm font-semibold text-ink text-right min-w-0 leading-normal">
                   {account.branch}
                 </span>
               </div>
 
-              <div className="flex items-center justify-between py-2 border-b border-black/[0.06] gap-3">
+              <div className="flex items-center justify-between py-2.5 border-b border-black/[0.06] gap-3">
                 <span className="text-xs sm:text-sm font-medium text-ink/55 shrink-0">A/C Name:</span>
-                <span className="text-xs sm:text-sm font-bold text-ink text-right">
+                <span className="text-xs sm:text-sm font-bold text-ink text-right min-w-0 leading-normal">
                   {account.accountName}
                 </span>
               </div>

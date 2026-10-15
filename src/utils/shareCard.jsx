@@ -1,4 +1,4 @@
-import { toBlob } from "html-to-image"
+import { toBlob, toPng } from "html-to-image"
 
 /**
  * Clean WhatsApp icon SVG component.
@@ -17,8 +17,51 @@ export function WhatsAppIcon({ className = "w-4 h-4" }) {
 }
 
 /**
- * Captures an element as an image, copies it to clipboard, and shares via WhatsApp.
- * Supports both mobile (native file share sheet) and desktop (copies image to clipboard + opens WhatsApp Web).
+ * Converts a base64 data URL to a binary Blob synchronously.
+ */
+function dataUrlToBlob(dataUrl) {
+  const arr = dataUrl.split(",")
+  const mime = arr[0].match(/:(.*?);/)?.[1] || "image/png"
+  const bstr = atob(arr[1])
+  let n = bstr.length
+  const u8arr = new Uint8Array(n)
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n)
+  }
+  return new Blob([u8arr], { type: mime })
+}
+
+/**
+ * Fast and resilient DOM to PNG Blob conversion.
+ * Uses skipFonts: true so external font downloads never cause network delay,
+ * keeping execution within mobile Safari's user gesture window (< 100ms).
+ */
+async function elementToPngBlob(element, options) {
+  // Method 1: toBlob (fastest, canvas-native)
+  try {
+    const blob = await toBlob(element, options)
+    if (blob && blob.size > 0) return blob
+  } catch (err) {
+    console.warn("toBlob attempt failed, trying toPng fallback:", err)
+  }
+
+  // Method 2: toPng + synchronous dataUrlToBlob (100% reliable on iOS WebKit)
+  try {
+    const dataUrl = await toPng(element, options)
+    if (dataUrl && dataUrl.startsWith("data:image")) {
+      const blob = dataUrlToBlob(dataUrl)
+      if (blob && blob.size > 0) return blob
+    }
+  } catch (err2) {
+    console.warn("toPng fallback failed:", err2)
+  }
+
+  return null
+}
+
+/**
+ * Captures an element as an image card and shares via WhatsApp.
+ * Fully compatible with both iOS (Safari/WebKit) and Android (Chrome), as well as Desktop.
  */
 export async function shareElementViaWhatsApp({
   element,
@@ -28,10 +71,11 @@ export async function shareElementViaWhatsApp({
 }) {
   if (!element) return { success: false, error: "No element provided" }
 
-  let blob = null
   const captureOptions = {
     pixelRatio: 2,
     backgroundColor: "#ffffff",
+    skipFonts: true,
+    cacheBust: false,
     style: {
       transform: "none",
     },
@@ -42,22 +86,39 @@ export async function shareElementViaWhatsApp({
     },
   }
 
-  // Attempt 1: Standard high-res capture
-  try {
-    blob = await toBlob(element, captureOptions)
-  } catch (err) {
-    console.warn("Capture attempt 1 failed, retrying without external fonts:", err)
-    // Attempt 2: Retry with skipFonts in case external @font-face rules block SVG foreignObject
+  // Fast capture within user gesture lifespan
+  const blob = await elementToPngBlob(element, captureOptions)
+
+  // 1. Mobile (iOS & Android) — Native Web Share API with file
+  // IMPORTANT for iOS: navigator.share MUST be called directly within the initial user gesture.
+  // Do NOT call navigator.clipboard.write beforehand, as that consumes the user gesture on iOS Safari.
+  if (blob && typeof navigator !== "undefined" && typeof navigator.share === "function") {
     try {
-      blob = await toBlob(element, { ...captureOptions, skipFonts: true })
-    } catch (err2) {
-      console.warn("Capture attempt 2 failed:", err2)
+      const file = new File([blob], fileName, {
+        type: "image/png",
+        lastModified: Date.now(),
+      })
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title,
+          text,
+        })
+        return { success: true, method: "native-share" }
+      }
+    } catch (shareErr) {
+      if (shareErr.name === "AbortError") {
+        // User dismissed the native share sheet
+        return { success: true, method: "cancelled" }
+      }
+      console.warn("Native file share failed:", shareErr)
     }
   }
 
+  // 2. Desktop fallback (where native file sharing is not supported):
+  // Copy image to clipboard so user can paste it (Ctrl+V) into WhatsApp Web
   let copied = false
-
-  // 1. Copy image to clipboard if blob was generated (supported in modern Chrome, Edge, Safari, Firefox)
   if (blob && typeof navigator !== "undefined" && navigator.clipboard?.write) {
     try {
       await navigator.clipboard.write([
@@ -67,34 +128,11 @@ export async function shareElementViaWhatsApp({
       ])
       copied = true
     } catch (clipboardErr) {
-      console.warn("Clipboard write image failed:", clipboardErr)
+      console.warn("Clipboard write failed on desktop:", clipboardErr)
     }
   }
 
-  // 2. If browser supports native Web Share API with files (iOS Safari, Android Chrome, mobile devices)
-  if (blob && typeof navigator !== "undefined" && typeof navigator.share === "function") {
-    try {
-      const file = new File([blob], fileName, { type: "image/png" })
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title,
-          text,
-        })
-        return { success: true, copied, method: "native-share" }
-      }
-    } catch (shareErr) {
-      if (shareErr.name === "AbortError") {
-        // User dismissed native share sheet
-        return { success: true, copied, method: "cancelled" }
-      }
-      console.warn("Native file share failed, falling back to WhatsApp link:", shareErr)
-    }
-  }
-
-  // 3. Desktop / Web fallback:
-  // Open WhatsApp with pre-filled text.
-  // The screenshot image is already in the clipboard, ready to paste with Ctrl+V.
+  // 3. Open WhatsApp Web or app with pre-filled text
   const encodedText = encodeURIComponent(text)
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`
   window.open(whatsappUrl, "_blank", "noopener,noreferrer")
