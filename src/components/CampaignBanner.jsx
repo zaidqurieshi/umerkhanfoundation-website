@@ -4,10 +4,11 @@ import { oxygenCampaign } from "../data/content"
 
 /**
  * Featured Campaign Banner — Oxygen Concentrator Initiative.
- * Clean, non-duplicative presentation:
- * 1. Desktop & Tablet: Full 16:9 banner with pixel-perfect clickable HTML overlay on the "Pay Now" button.
- * 2. Mobile: Clean banner with accessible, tap-friendly standalone Pay Now button directly underneath.
- * 3. All duplicative headings and descriptions removed to let the banner graphic speak for itself.
+ * Displays:
+ * 1. Top bar: Eyebrow ("FEATURED CAMPAIGN · RESPIRATORY CARE") + Goal Badge ("FUNDRAISING GOAL: ₹65,000").
+ * 2. Visual 16:9 banner with pixel-perfect clickable HTML overlay on the "Pay Now" button.
+ * 3. Mobile: Accessible standalone tap-friendly Pay Now button directly beneath the image.
+ * 4. Free of any duplicate title/description paragraphs.
  */
 export default function CampaignBanner() {
   const handleBannerClick = () => {
@@ -17,10 +18,31 @@ export default function CampaignBanner() {
   return (
     <section
       id="campaign"
-      className="scroll-mt-24 py-6 sm:py-10 lg:py-12"
+      className="scroll-mt-24 py-6 sm:py-8 lg:py-10"
       aria-label="Oxygen Concentrator Campaign"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Top Header Row: Eyebrow + Goal Badge */}
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 sm:mb-5">
+          <span className="inline-flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.22em] text-brand-600">
+            <span className="h-px w-8 bg-brand-500/50" aria-hidden="true" />
+            {oxygenCampaign.eyebrow}
+          </span>
+
+          <div className="inline-flex shrink-0 items-center gap-3 rounded-2xl border border-brand-200/90 bg-brand-50/80 px-4 py-2 shadow-xs backdrop-blur">
+            <span className="soft-pulse h-2.5 w-2.5 shrink-0 rounded-full bg-brand-600" aria-hidden="true" />
+            <div className="flex flex-col">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-brand-700">
+                Fundraising Goal
+              </span>
+              <span className="font-display text-lg font-semibold tracking-tight text-brand-900">
+                {oxygenCampaign.targetDisplay}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Campaign Banner Card */}
         <Reveal>
           <div className="group relative overflow-hidden rounded-2xl border border-black/[0.08] bg-white shadow-card transition-all duration-300 hover:shadow-soft sm:rounded-3xl">
             {/* Visual Banner Media Container */}
