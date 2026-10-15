@@ -17,6 +17,7 @@ import { SiGooglepay, SiPaytm, SiPhonepe, SiWhatsapp } from "react-icons/si"
 import { LogoMark } from "./ui/Logo"
 import { donation, org } from "../data/content"
 import { useDonation } from "../context/DonationContext"
+import { WhatsAppIcon, shareElementViaWhatsApp } from "../utils/shareCard"
 
 const STEPS = {
   choose: "Choose a method",
@@ -56,7 +57,10 @@ export default function DonationModal() {
   const [copied, setCopied] = useState(false)
   const [upiFail, setUpiFail] = useState(null)
   const [pendingMethod, setPendingMethod] = useState(null)
+  const [sharingQr, setSharingQr] = useState(false)
+  const [qrShareStatus, setQrShareStatus] = useState("")
   const panelRef = useRef(null)
+  const qrCardRef = useRef(null)
   const reduce = useReducedMotion()
 
   /* reset the flow each time the sheet opens */
@@ -67,6 +71,8 @@ export default function DonationModal() {
       setCopied(false)
       setUpiFail(null)
       setPendingMethod(null)
+      setSharingQr(false)
+      setQrShareStatus("")
     }
   }, [isOpen])
 
@@ -163,6 +169,41 @@ export default function DonationModal() {
 
   const qrConfig = donation.qr.codes?.[activeQr] ?? donation.qr.codes?.[0]
   const qrReady = donation.qr.enabled && qrConfig?.image
+
+  const handleShareQr = async () => {
+    if (!qrCardRef.current || sharingQr) return
+    setSharingQr(true)
+    setQrShareStatus("")
+
+    const upiIdText = qrConfig?.upiId ? `• UPI ID: ${qrConfig.upiId}\n` : ""
+    const text =
+      `*Umer Khan Foundation*\nOfficial UPI QR Code & Donation Details:\n\n` +
+      upiIdText +
+      `• Organization: ${donation.orgName}\n\n` +
+      `Scan the QR code or use the UPI ID in any UPI app (GPay, PhonePe, Paytm, mPay) to donate directly.\n` +
+      `https://umerkhanfoundation.com`
+
+    try {
+      const result = await shareElementViaWhatsApp({
+        element: qrCardRef.current,
+        fileName: "ukf-upi-qr.png",
+        title: `${donation.orgName} - Official UPI QR`,
+        text,
+      })
+
+      if (result.method === "whatsapp-link" || result.copied) {
+        setQrShareStatus("Copied! Opening WhatsApp...")
+      } else if (result.method === "native-share") {
+        setQrShareStatus("Shared!")
+      }
+    } catch (err) {
+      console.error("Failed to share QR code:", err)
+      setQrShareStatus("Failed to share")
+    } finally {
+      setSharingQr(false)
+      setTimeout(() => setQrShareStatus(""), 3500)
+    }
+  }
 
   const gatewayReady = donation.gateway.enabled && donation.gateway.url
 
@@ -300,7 +341,10 @@ export default function DonationModal() {
 
                   {qrReady ? (
                     <>
-                      <div className="relative mx-auto flex w-full max-w-[280px] flex-col items-center overflow-hidden rounded-3xl border border-black/[0.08] bg-white p-5 shadow-card">
+                      <div
+                        ref={qrCardRef}
+                        className="relative mx-auto flex w-full max-w-[280px] flex-col items-center overflow-hidden rounded-3xl border border-black/[0.08] bg-white p-5 shadow-card"
+                      >
                         <img
                           src={qrConfig.image}
                           alt={`Official payment QR code for ${donation.orgName}`}
@@ -311,6 +355,23 @@ export default function DonationModal() {
                           <span className="inline-block h-2 w-2 rounded-full bg-brand-500" aria-hidden="true" />
                           Official UPI QR · {donation.orgName}
                         </div>
+                      </div>
+
+                      <div className="mx-auto w-full max-w-[280px]" data-ignore-screenshot="true">
+                        <button
+                          type="button"
+                          onClick={handleShareQr}
+                          disabled={sharingQr}
+                          aria-label="Share QR code via WhatsApp"
+                          className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.99] px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:shadow transition-all duration-200 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
+                        >
+                          <WhatsAppIcon className="h-4 w-4 text-white shrink-0" />
+                          <span>
+                            {sharingQr
+                              ? "Capturing QR..."
+                              : qrShareStatus || "Share QR on WhatsApp"}
+                          </span>
+                        </button>
                       </div>
 
                       {qrConfig.upiId && (
