@@ -4,7 +4,7 @@ import { useReducedMotion } from "framer-motion"
 import Reveal from "./ui/Reveal"
 import { oxygenCampaign } from "../data/content"
 
-const SLIDE_INTERVAL = 3000
+const SLIDE_INTERVAL = 5000
 
 export default function CampaignBanner() {
   const [activeSlide, setActiveSlide] = useState(0)
@@ -38,7 +38,7 @@ export default function CampaignBanner() {
         <Reveal>
           <div className="overflow-hidden rounded-2xl border border-black/[0.08] bg-white shadow-card sm:rounded-3xl">
             <div
-              className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100 sm:aspect-[1920/820]"
+              className="relative aspect-[1920/820] w-full overflow-hidden bg-slate-100"
               role="region"
               aria-roledescription="carousel"
               aria-label="Foundation initiatives"
@@ -54,7 +54,7 @@ export default function CampaignBanner() {
                   height={820}
                   loading={index === 0 ? "eager" : "lazy"}
                   fetchPriority={index === 0 ? "high" : "auto"}
-                  className={`absolute inset-0 h-full w-full select-none object-cover transition-opacity duration-700 ${index === activeSlide ? "opacity-100" : "opacity-0"}`}
+                  className={`absolute inset-0 h-full w-full select-none object-contain transition-opacity duration-700 sm:object-cover ${index === activeSlide ? "opacity-100" : "opacity-0"}`}
                   aria-hidden={index !== activeSlide}
                 />
               ))}
