@@ -109,7 +109,7 @@ export const hero = {
 export const oxygenCampaign = {
   id: "campaign",
   eyebrow: "Featured Campaigns",
-  paymentUrl: "https://razorpay.me/@umerkhanfoundation",
+  paymentUrl: "https://rzp.io/rzp/hUH4nCe",
   slides: [
     { src: "/campaigns/education.png", alt: "Educational assistance helping students access school fees, books, uniforms and learning resources" },
     { src: "/campaigns/orphan-care.png", alt: "Orphan care providing children with a safe home, education, nutrition and emotional support" },
