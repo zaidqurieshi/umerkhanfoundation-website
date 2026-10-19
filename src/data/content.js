@@ -67,13 +67,7 @@ export const navLinks = [
 
 export const ticker = {
   items: [
-    { text: "Medical Assistance" },
-    { text: "Monthly Food Assistance" },
-    { text: "Oxygen Support" },
-    { text: "Orphan Care" },
-    { text: "Educational Assistance" },
-    { text: "Cash Assistance" },
-    { text: "One Time Medical Assistance" },
+    { text: "A Government registered Charitable Trust" },
   ],
   cta: null,
 }
@@ -356,6 +350,7 @@ export const footer = {
     "Working for the social development of underprivileged individuals, groups and communities in Srinagar, Jammu & Kashmir.",
   copyright: "2026 Umer Khan Foundation. All rights reserved.",
   locationLine: "Srinagar, Jammu & Kashmir, India",
+  registrationLine: "Reg No 345/2020 · 80G Exempted",
   workLinksTitle: "Our Work",
   exploreLinksTitle: "Explore",
   connectLinksTitle: "Connect",

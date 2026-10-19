@@ -115,6 +115,7 @@ export default function Footer() {
         <div className="mt-14 flex flex-col gap-3 border-t border-white/10 py-7 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p>{footer.copyright}</p>
+            <p className="mt-1 text-white/60">{footer.registrationLine}</p>
             <p className="mt-1 text-white">
               Designed by{" "}
               <a

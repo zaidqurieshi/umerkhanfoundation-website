@@ -42,9 +42,8 @@ export default function NewsTicker() {
       className="overflow-hidden bg-brand-950 py-2 text-white"
       aria-label="Latest updates from Umer Khan Foundation"
     >
-      <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
+      <div className="mx-auto flex w-max max-w-full justify-center">
         <TickerRow />
-        <TickerRow ariaHidden />
       </div>
     </aside>
   )
