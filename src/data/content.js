@@ -108,25 +108,15 @@ export const hero = {
 
 export const oxygenCampaign = {
   id: "campaign",
-  eyebrow: "Featured Campaign · Respiratory Care",
-  category: "Healthcare Initiative",
-  title: "Help Us Bring the Gift of Breath",
-  subtitle: "Oxygen Concentrator Fundraiser",
-  targetAmount: 65000,
-  targetDisplay: "₹65,000",
-  description:
-    "We are raising ₹65,000 to purchase an Oxygen Concentrator to support patients who require supplemental oxygen and improve access to essential respiratory care.",
-  winterNote:
-    "As part of this initiative, we aim to equip ourselves with essential medical equipment to support our elders in getting through the harsh winter months with greater care, comfort, and dignity.",
-  paymentUrl: "https://pages.razorpay.com/kashmiroxygen",
-  bannerImage: "/oxygen-concentrator-banner.png",
-  bannerAlt:
-    "Help Us Bring the Gift of Breath — Oxygen Concentrator fundraising campaign with a target of ₹65,000",
-  features: [
-    "Supports Patients in Need",
-    "Helps Our Elders This Winter",
-    "Essential Medical Equipment",
-    "Every Contribution Makes a Difference",
+  eyebrow: "Featured Campaigns",
+  paymentUrl: "https://razorpay.me/@umerkhanfoundation",
+  slides: [
+    { src: "/campaigns/education.png", alt: "Educational assistance helping students access school fees, books, uniforms and learning resources" },
+    { src: "/campaigns/orphan-care.png", alt: "Orphan care providing children with a safe home, education, nutrition and emotional support" },
+    { src: "/campaigns/medical-assistance.png", alt: "Medical assistance helping families access healthcare, medicines and treatment" },
+    { src: "/campaigns/financial-assistance.png", alt: "Financial assistance helping families manage emergencies and essential expenses" },
+    { src: "/campaigns/oxygen-ambulance.png", alt: "Oxygen and ambulance support for patients in medical need" },
+    { src: "/campaigns/food-supplies.png", alt: "Food and household supplies for families in need" },
   ],
 }
 
