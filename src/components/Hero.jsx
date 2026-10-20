@@ -2,7 +2,6 @@ import { Fragment, useEffect, useState } from "react"
 import { animate, motion, useReducedMotion } from "framer-motion"
 import { LuArrowDown, LuFacebook, LuHeart, LuInstagram } from "react-icons/lu"
 import { hero, org } from "../data/content"
-import { ticker } from "../data/content"
 import { useDonation } from "../context/DonationContext"
 
 const container = {
@@ -119,11 +118,10 @@ export default function Hero() {
         >
           <motion.div
             variants={item}
-            className="hidden sm:inline-flex items-center gap-2.5 rounded-full border border-brand-200/80 bg-white/70 px-4 py-1.5 backdrop-blur"
+            className="inline-flex items-center gap-2.5 rounded-full border border-brand-200/80 bg-white/70 px-4 py-1.5 backdrop-blur"
           >
             <span className="soft-pulse inline-block h-2 w-2 rounded-full bg-brand-500" aria-hidden="true" />
             <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-700">{hero.eyebrow}</span>
-            <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-ink/50" aria-hidden="true">· {ticker.items[0].text}</span>
             <span className="hidden text-[11px] font-medium uppercase tracking-[0.18em] text-ink/40 sm:inline">
               · {hero.location}
             </span>

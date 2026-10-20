@@ -67,7 +67,12 @@ export const navLinks = [
 
 export const ticker = {
   items: [
-    { text: "A Government registered Charitable Trust" },
+    { text: "Medical Assistance" },
+    { text: "O₂ Support" },
+    { text: "Orphan Care" },
+    { text: "Educational Assistance" },
+    { text: "Food & Supplies" },
+    { text: "Financial Assistance" },
   ],
   cta: null,
 }
