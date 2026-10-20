@@ -30,7 +30,9 @@ export default function App() {
       </a>
 
       <ScrollProgress />
-      <NewsTicker />
+      <div className="sm:hidden">
+        <NewsTicker />
+      </div>
       <Navbar />
 
       <main>
