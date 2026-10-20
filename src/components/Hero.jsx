@@ -121,7 +121,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2.5 rounded-full border border-brand-200/80 bg-white/70 px-4 py-1.5 backdrop-blur"
           >
             <span className="soft-pulse inline-block h-2 w-2 rounded-full bg-brand-500" aria-hidden="true" />
-            <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-700">{hero.eyebrow}</span>
+            <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-700">A Government Registred Charitable Trust</span>
             <span className="hidden text-[11px] font-medium uppercase tracking-[0.18em] text-ink/40 sm:inline">
               · {hero.location}
             </span>
