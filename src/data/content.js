@@ -103,6 +103,15 @@ export const hero = {
   chip: { text: "Featured campaign · Winter Kit Kashmir" },
 }
 
+/* ── 3a · Winter Kit Programme banner ─────────────────────────── */
+
+export const winterKitBanner = {
+  title: "Winter Kit Programme 2026",
+  src: "/campaigns/winter-kit-2026.webp",
+  alt: "Winter Kit Programme 2026: Warmth for Kashmir's Families. An elderly man wraps a smiling child in a blanket in a snowy village. Kits include warm clothing, blankets, thermals, warm socks and kangris.",
+  ctaLabel: "Support the Winter Kit Programme",
+}
+
 /* ── 3b · Featured Campaign — Oxygen Concentrator ─────────────── */
 
 export const oxygenCampaign = {
